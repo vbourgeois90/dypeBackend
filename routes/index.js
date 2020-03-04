@@ -9,7 +9,18 @@ var agenceModel = require('../models/agences');
 var annonceModel = require('../models/annonces');
 var rdvModel = require('../models/rdv');
 
-var salt = uid2(15)
+var fs = require('fs');
+var uniqid = require('uniqid');
+
+var salt = uid2(15);
+
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({ 
+  cloud_name: 'dainctmx1',
+  api_key: '981664579932456', 
+  api_secret: 'VMszQ3p1S93QAEWQiCzNzdiTpUE'
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -57,4 +68,24 @@ router.post('/signIn', async function(req, res, next) {
 		res.json({ success: false , error: 'Remplissez vos champs de saisie' });
 	}
 });
+
+
+router.post('/uploadPhoto', async function(req, res, next) {
+  
+  var imagePath = './tmp/'+uniqid()+'.jpg';
+  var resultCopy = await req.files.photo.mv(imagePath);
+  var resultCloudinary = await cloudinary.uploader.upload(imagePath);
+  
+  if(!resultCopy) {
+    res.json({result: true, message: 'File uploaded!', resultCloudinary} );     
+  } else {
+    res.json({result: false, message: resultCopy} );
+  }
+  
+  // fs.unlinkSync(imagePath);
+  
+});
+
+
+
 module.exports = router;
