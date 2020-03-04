@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-/* ROUTES SingIn SignUp Hasni */
+/* ROUTES SignUp Hasni */
 
 router.post("/SingUp", async function(req, res,next){
   var newUser = new userModel ({
@@ -30,34 +30,31 @@ router.post("/SingUp", async function(req, res,next){
  res.json({sucess:true,newUser})
 })
 
-/* ROUTES SingIn SignUp Hasni */
+/* ROUTES SingIn Hasni */
 
-// router.post('/sign-in', async function(req, res, next) {
-	
-// 	if (req.body.email && req.body.password) {
+router.post('/signIn', async function(req, res, next) {
+  console.log("red body",req.body.email, req.body.mdp)
+	if (req.body.email && req.body.mdp) {
 		
-// 		let userObj = await UserModel.findOne({ email: req.body.email });
-// 		let hash = SHA256(req.body.password + userObj.salt).toString(encBase64);
-   
-// 		if( userObj ) {
-		
-// 			if ( hash === userObj.password ){
+		let userObj = await userModel.findOne({ email: req.body.email });
+    console.log(userObj);
+		if( userObj ) {
+      let hash = SHA256(req.body.mdp + userObj.salt).toString(encBase64);
+			if ( hash === userObj.password ){
+        res.json({ success: true });
+      } else {
+        console.log("mauvais mdp",userObj)
+				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
+			}
 			
-// 				let newToken = uid2(32);
-// 				userObj = await UserModel.updateOne( { email: req.body.email }, {token: newToken} );
-				
-// 				res.json({ success: true, userToken: newToken });
-				
-// 			} else {
-// 				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
-// 			}
-			
-// 		} else {
-// 			res.json({ success: false, error: `Vous n'êtes pas enregistré.e` });
-// 		}
-// 	}
-// 	else {
-// 		res.json({ success: false , error: 'Remplissez vos champs de saisie' });
-// 	}
-// });
+		} else {
+      console.log("mauvais user",userObj)
+
+			res.json({ success: false, error: "Vous n'êtes pas enregistré(e)" });
+		}
+	}
+	else {
+		res.json({ success: false , error: 'Remplissez vos champs de saisie' });
+	}
+});
 module.exports = router;
