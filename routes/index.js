@@ -30,4 +30,34 @@ router.post("/SingUp", async function(req, res,next){
  res.json({sucess:true,newUser})
 })
 
+/* ROUTES SingIn SignUp Hasni */
+
+// router.post('/sign-in', async function(req, res, next) {
+	
+// 	if (req.body.email && req.body.password) {
+		
+// 		let userObj = await UserModel.findOne({ email: req.body.email });
+// 		let hash = SHA256(req.body.password + userObj.salt).toString(encBase64);
+   
+// 		if( userObj ) {
+		
+// 			if ( hash === userObj.password ){
+			
+// 				let newToken = uid2(32);
+// 				userObj = await UserModel.updateOne( { email: req.body.email }, {token: newToken} );
+				
+// 				res.json({ success: true, userToken: newToken });
+				
+// 			} else {
+// 				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
+// 			}
+			
+// 		} else {
+// 			res.json({ success: false, error: `Vous n'êtes pas enregistré.e` });
+// 		}
+// 	}
+// 	else {
+// 		res.json({ success: false , error: 'Remplissez vos champs de saisie' });
+// 	}
+// });
 module.exports = router;
