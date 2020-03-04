@@ -8,12 +8,17 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.0.0",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "mongoose": "^5.9.2",
     "morgan": "~1.9.1",
+<<<<<<< HEAD
     "sync-request": "^6.1.0"
+=======
+    "uid2": "0.0.3"
+>>>>>>> 24dd6cca1096e33119b976353475c4732b11d110
   }
 }
