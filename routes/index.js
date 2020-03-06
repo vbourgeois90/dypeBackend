@@ -136,7 +136,7 @@ router.post('/uploadfromphone', async function(req, res, next) {
   var resultCopy = await req.files.doc.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
   
-  /////////////////////// BESOIN DE RECUPERER L'USER ID DU STORE 
+  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
 
   var user = await userModel.findOne({nom: 'Fiorese'});
 
@@ -160,9 +160,12 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 router.get('/getDocuments', async function (req, res, next){
   
+
+  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
+  
   var user = await userModel.findOne({nom: 'Fiorese'});
 
-  res.json({result: 'OK', documents: user.documents})
+  res.json({result: 'OK', documents: user.documents});
 })
 
 
