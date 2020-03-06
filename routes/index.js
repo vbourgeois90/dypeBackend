@@ -8,9 +8,21 @@ var userModel = require('../models/users');
 var agenceModel = require('../models/agences');
 var annonceModel = require('../models/annonces');
 var rdvModel = require('../models/rdv');
+
+var fs = require('fs');
+var uniqid = require('uniqid');
+
+var salt = uid2(15);
+
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({ 
+  cloud_name: 'dainctmx1',
+  api_key: '981664579932456', 
+  api_secret: 'VMszQ3p1S93QAEWQiCzNzdiTpUE'
+});
+
 const request = require('sync-request');
 const cheerio = require ('cheerio');
-var salt = uid2(15)
 
 
 /* Scraping du bg. */
@@ -63,7 +75,11 @@ router.get('/', async function(req, res, next) {
   res.json(annonceSave); 
 });
  
+<<<<<<< HEAD
 /* ROUTES SingIn SignUp Hasni */
+=======
+/* ROUTES SignUp Hasni */
+>>>>>>> 1b5dca5659940fcb40ae646373d69333bed1c515
 
 router.post("/SingUp", async function(req, res,next){
   var newUser = new userModel ({
@@ -105,4 +121,44 @@ router.post('/signIn', async function(req, res, next) {
 		res.json({ success: false , error: 'Remplissez vos champs de saisie' });
 	}
 });
+
+
+// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO
+router.post('/uploadPhoto', async function(req, res, next) {
+  
+  var imagePath = './tmp/'+uniqid()+'.jpg';
+  var resultCopy = await req.files.photo.mv(imagePath);
+  var resultCloudinary = await cloudinary.uploader.upload(imagePath);
+  
+  if(!resultCopy) {
+    res.json({result: true, message: 'File uploaded!', resultCloudinary} );     
+  } else {
+    res.json({result: false, message: resultCopy} );
+  }
+  
+  // fs.unlinkSync(imagePath);
+  
+});
+
+
+// UPLOAD DOCUMENT DEPUIS LE TELEPHONE
+router.post('/uploadfromphone', async function(req, res, next) {
+
+  console.log('req.files.doc :', req.files.doc);
+  var imagePath = './tmp/'+uniqid()+'.jpg';
+  var resultCopy = await req.files.doc.mv(imagePath);
+  var resultCloudinary = await cloudinary.uploader.upload(imagePath);
+  
+  if(!resultCopy) {
+    res.json({result: true, message: 'File uploaded!', resultCloudinary, countID} );     
+  } else {
+    res.json({result: false, message: resultCopy} );
+  }
+  
+  fs.unlinkSync(imagePath);
+
+})
+
+
+
 module.exports = router;
