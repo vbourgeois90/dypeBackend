@@ -6,11 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-<<<<<<< HEAD
     "cloudinary": "^1.19.0",
-=======
     "cheerio": "^1.0.0-rc.3",
->>>>>>> eac74cbabb5350a6a412ed78cca68053fa9db542
     "cookie-parser": "~1.4.4",
     "crypto-js": "^4.0.0",
     "debug": "~2.6.9",
@@ -21,12 +18,8 @@
     "http-errors": "~1.6.3",
     "mongoose": "^5.9.2",
     "morgan": "~1.9.1",
-<<<<<<< HEAD
     "uid2": "0.0.3",
-    "uniqid": "^5.2.0"
-=======
-    "sync-request": "^6.1.0",
-    "uid2": "0.0.3"
->>>>>>> eac74cbabb5350a6a412ed78cca68053fa9db542
+    "uniqid": "^5.2.0",
+    "sync-request": "^6.1.0"
   }
 }

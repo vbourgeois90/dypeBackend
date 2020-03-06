@@ -78,6 +78,7 @@ router.post("/SingUp", async function(req, res,next){
     salt :salt
   })
   await newUser.save();
+  console.log('newUser :', newUser);
  res.json({sucess:true,newUser})
 })
 
@@ -110,7 +111,7 @@ router.post('/signIn', async function(req, res, next) {
 });
 
 
-// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO
+// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO - RESTE A FAIRE§§§
 router.post('/uploadPhoto', async function(req, res, next) {
   
   var imagePath = './tmp/'+uniqid()+'.jpg';
@@ -131,13 +132,24 @@ router.post('/uploadPhoto', async function(req, res, next) {
 // UPLOAD DOCUMENT DEPUIS LE TELEPHONE
 router.post('/uploadfromphone', async function(req, res, next) {
 
-  console.log('req.files.doc :', req.files.doc);
   var imagePath = './tmp/'+uniqid()+'.jpg';
   var resultCopy = await req.files.doc.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
   
+  /////////////////////// BESOIN DE RECUPERER L'USER ID DU STORE 
+
+  var user = await userModel.findOne({nom: 'Fiorese'});
+
+  var docUploaded={
+    type: req.files.doc.name,
+    url: resultCloudinary.secure_url
+  }
+
+  user.documents.push(docUploaded);
+  var userSaved = await user.save();
+
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', resultCloudinary, countID} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
@@ -146,6 +158,12 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 })
 
+router.get('/getDocuments', async function (req, res, next){
+  
+  var user = await userModel.findOne({nom: 'Fiorese'});
+
+  res.json({result: 'OK', documents: user.documents})
+})
 
 
 module.exports = router;
