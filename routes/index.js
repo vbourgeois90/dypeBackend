@@ -41,7 +41,16 @@ router.get('/', async function(req, res, next) {
       let link = $(this).find('.product-media').parent().attr('href')
       let piece = $(this).find('.first').next().text().trim()
       let m2 = $(this).find('.first').next().next().text().trim()
-      console.log(m2)
+
+
+      // var detail = request ('GET',`https://www.avendrealouer.fr/${link}`)
+      // if(detail.statusCode <300){
+      //   const $$ = cheerio.load(result.body)
+      //   $('.property-description').find('div').each( function(){
+      //     let fullDesc = $(this).find('.property-description-main').text().trim()
+      //     console.log(fullDesc)
+      //   })
+      // }
 
       
       if(lieux && price && type && description && img && link){
@@ -66,7 +75,11 @@ router.get('/', async function(req, res, next) {
   res.json(annonceSave); 
 });
  
+<<<<<<< HEAD
+/* ROUTES SingIn SignUp Hasni */
+=======
 /* ROUTES SignUp Hasni */
+>>>>>>> 1b5dca5659940fcb40ae646373d69333bed1c515
 
 router.post("/SingUp", async function(req, res,next){
   var newUser = new userModel ({
