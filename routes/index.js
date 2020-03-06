@@ -21,11 +21,51 @@ cloudinary.config({
   api_secret: 'VMszQ3p1S93QAEWQiCzNzdiTpUE'
 });
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const request = require('sync-request');
+const cheerio = require ('cheerio');
 
+
+/* Scraping du bg. */
+router.get('/', async function(req, res, next) {
+  
+  var result = request('GET','https://www.avendrealouer.fr/recherche.html?pageIndex=1&sortPropertyName=Price&sortDirection=Descending&searchTypeID=2&typeGroupCategoryID=6&localityIds=3-75&typeGroupIds=47,48,56&maximumPrice=2000')
+  var annonceSave;
+  if(result.statusCode < 300){
+    const $ = cheerio.load(result.body)
+    $('.mode-list').children().each( async function(){
+      let lieux = $(this).find('.loca').text().trim()
+      let price = $(this).find('.price').text().trim()
+      let type = $(this).find('li.first').text().trim()
+      let description = $(this).find('.propShortDesc').text().trim()
+      let img = $(this).find('.product-media').children().attr('src')
+      let link = $(this).find('.product-media').parent().attr('href')
+      let piece = $(this).find('.first').next().text().trim()
+      let m2 = $(this).find('.first').next().next().text().trim()
+      console.log(m2)
+
+      
+      if(lieux && price && type && description && img && link){
+        var newAnnonce = new annonceModel({
+          localisation : lieux,
+          prix : price,
+          nbPiece : piece,
+          typeDeBien : type,
+          descriptionBref : description,
+          image : img,
+          lien : link,
+          surface : m2,
+          
+        })  
+        annonceSave = await newAnnonce.save() 
+       
+      }
+      
+    }) 
+  } 
+  
+  res.json(annonceSave); 
+});
+ 
 /* ROUTES SignUp Hasni */
 
 router.post("/SingUp", async function(req, res,next){
