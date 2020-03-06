@@ -70,6 +70,7 @@ router.post('/signIn', async function(req, res, next) {
 });
 
 
+// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO
 router.post('/uploadPhoto', async function(req, res, next) {
   
   var imagePath = './tmp/'+uniqid()+'.jpg';
@@ -85,6 +86,25 @@ router.post('/uploadPhoto', async function(req, res, next) {
   // fs.unlinkSync(imagePath);
   
 });
+
+
+// UPLOAD DOCUMENT DEPUIS LE TELEPHONE
+router.post('/uploadfromphone', async function(req, res, next) {
+
+  console.log('req.files.doc :', req.files.doc);
+  var imagePath = './tmp/'+uniqid()+'.jpg';
+  var resultCopy = await req.files.doc.mv(imagePath);
+  var resultCloudinary = await cloudinary.uploader.upload(imagePath);
+  
+  if(!resultCopy) {
+    res.json({result: true, message: 'File uploaded!', resultCloudinary, countID} );     
+  } else {
+    res.json({result: false, message: resultCopy} );
+  }
+  
+  fs.unlinkSync(imagePath);
+
+})
 
 
 
