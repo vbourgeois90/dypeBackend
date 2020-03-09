@@ -134,7 +134,7 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
   console.log('req.files :', req.files);
 
-  var user = await userModel.findOne({nom: 'Fiorese'});
+  var user = await userModel.findOne({nom: 'Majax'});
 
   var docUploaded={
 
@@ -148,7 +148,7 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
 
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', resultCloudinary} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
@@ -167,7 +167,7 @@ router.post('/uploadfromphone', async function(req, res, next) {
   
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
 
-  var user = await userModel.findOne({nom: 'Fiorese'});
+  var user = await userModel.findOne({nom: 'Majax'});
 
   var docUploaded={
     type: req.files.doc.name,
@@ -192,7 +192,7 @@ router.get('/getDocuments', async function (req, res, next){
 
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   
-  var user = await userModel.findOne({nom: 'Fiorese'});
+  var user = await userModel.findOne({nom: 'Majax'});
 
   res.json({result: 'OK', documents: user.documents});
 })
