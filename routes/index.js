@@ -75,11 +75,7 @@ router.get('/', async function(req, res, next) {
   res.json(annonceSave); 
 });
  
-<<<<<<< HEAD
-/* ROUTES SingIn SignUp Hasni */
-=======
 /* ROUTES SignUp Hasni */
->>>>>>> 1b5dca5659940fcb40ae646373d69333bed1c515
 
 router.post("/SingUp", async function(req, res,next){
   var newUser = new userModel ({
