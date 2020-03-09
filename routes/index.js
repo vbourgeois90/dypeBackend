@@ -27,7 +27,7 @@ router.post("/SingUp", async function(req, res,next){
     salt :salt
   })
   await newUser.save();
- res.json({sucess:true,newUser})
+  res.json({sucess:true,newUser})
 })
 
 /* ROUTES SingIn Hasni */
@@ -57,4 +57,5 @@ router.post('/signIn', async function(req, res, next) {
 		res.json({ success: false , error: 'Remplissez vos champs de saisie' });
 	}
 });
+
 module.exports = router;
