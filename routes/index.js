@@ -129,20 +129,39 @@ router.post('/signIn', async function(req, res, next) {
 });
 
 
-// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO - RESTE A FAIRE§§§
-router.post('/uploadPhoto', async function(req, res, next) {
+// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO
+router.post('/uploadfromcamera', async function(req, res, next) {
   
+  console.log('req.files :', req.files);
+
   var imagePath = './tmp/'+uniqid()+'.jpg';
   var resultCopy = await req.files.photo.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
-  
+
+  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
+
+  console.log('req.files :', req.files);
+
+  var user = await userModel.findOne({nom: 'Fiorese'});
+
+  var docUploaded={
+
+    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR ICI
+    type: req.files.photo.name,
+    url: resultCloudinary.secure_url
+  }
+
+  user.documents.push(docUploaded);
+  var userSaved = await user.save();
+
+
   if(!resultCopy) {
     res.json({result: true, message: 'File uploaded!', resultCloudinary} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
   
-  // fs.unlinkSync(imagePath);
+  fs.unlinkSync(imagePath);
   
 });
 
