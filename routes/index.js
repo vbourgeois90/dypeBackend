@@ -23,12 +23,16 @@ cloudinary.config({
 
 const request = require('sync-request');
 const cheerio = require ('cheerio');
+const departement = [{name:"3-75"},{name:"3-78"},{name:"3-77"},{name:"3-92"},{name:"3-93"},{name:"3-94"},{name:"3-95"},{name:"3-91"}]
 
 
 /* Scraping du bg. */
 router.get('/', async function(req, res, next) {
   
-  var result = request('GET','https://www.avendrealouer.fr/recherche.html?pageIndex=1&sortPropertyName=Price&sortDirection=Descending&searchTypeID=2&typeGroupCategoryID=6&localityIds=3-75&typeGroupIds=47,48,56&maximumPrice=2000')
+  for(var i = 0; i<departement.length;i++){
+    var result = request('GET',`https://www.avendrealouer.fr/recherche.html?pageIndex=1&pageSize=25&sortPropertyName=ReleaseDate&sortDirection=Descending&searchTypeID=2&typeGroupCategoryID=6&localityIds=${departement[i].name}&typeGroupIds=47,56&minimumPrice=800&maximumPrice=2000&hashSearch=null_null_null_null_2000_null_null_800_null_False__null_2_6_False_False______3-75_____47,56_&UserSorted=true`)
+  
+  
   var annonceSave;
   if(result.statusCode < 300){
     const $ = cheerio.load(result.body)
@@ -46,10 +50,8 @@ router.get('/', async function(req, res, next) {
       // var detail = request ('GET',`https://www.avendrealouer.fr/${link}`)
       // if(detail.statusCode <300){
       //   const $$ = cheerio.load(result.body)
-      //   $('.property-description').find('div').each( function(){
-      //     let fullDesc = $(this).find('.property-description-main').text().trim()
+      //   let fullDesc = $$('.property-description-main').text().trim()
       //     console.log(fullDesc)
-      //   })
       // }
 
       
@@ -71,10 +73,20 @@ router.get('/', async function(req, res, next) {
       
     }) 
   } 
-  
+} 
   res.json(annonceSave); 
 });
+
+/* ROUTES RecoverAnnonce Hasni */
  
+router.get('/RecoverAnnonce', async function(req, res, next) {
+  var rep = await annonceModel.find();
+  console.log("mes annonces",rep)
+
+  res.json({success: true, rep});
+ })
+
+
 /* ROUTES SingIn SignUp Hasni */
 /* ROUTES SignUp Hasni */
 
@@ -88,8 +100,7 @@ router.post("/SingUp", async function(req, res,next){
     salt :salt
   })
   await newUser.save();
-  console.log('newUser :', newUser);
- res.json({sucess:true,newUser})
+  res.json({sucess:true,newUser})
 })
 
 /* ROUTES SingIn Hasni */
