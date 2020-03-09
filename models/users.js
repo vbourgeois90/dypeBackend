@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const documentSchema = mongoose.Schema({
     type: String,
     url: String,
-    
+    filename: String
 });
 
 const userSchema = mongoose.Schema({
@@ -17,8 +17,7 @@ const userSchema = mongoose.Schema({
     sexe: String,
     age: Number,
     probleme: Number,
-    documents: [documentSchema],
-
+    documents: [documentSchema]
 });
 
 const userModel = mongoose.model('users', userSchema);

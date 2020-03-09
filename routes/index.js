@@ -23,12 +23,16 @@ cloudinary.config({
 
 const request = require('sync-request');
 const cheerio = require ('cheerio');
+const departement = [{name:"3-75"},{name:"3-78"},{name:"3-77"},{name:"3-92"},{name:"3-93"},{name:"3-94"},{name:"3-95"},{name:"3-91"}]
 
 
 /* Scraping du bg. */
 router.get('/', async function(req, res, next) {
   
-  var result = request('GET','https://www.avendrealouer.fr/recherche.html?pageIndex=1&sortPropertyName=Price&sortDirection=Descending&searchTypeID=2&typeGroupCategoryID=6&localityIds=3-75&typeGroupIds=47,48,56&maximumPrice=2000')
+  for(var i = 0; i<departement.length;i++){
+    var result = request('GET',`https://www.avendrealouer.fr/recherche.html?pageIndex=1&pageSize=25&sortPropertyName=ReleaseDate&sortDirection=Descending&searchTypeID=2&typeGroupCategoryID=6&localityIds=${departement[i].name}&typeGroupIds=47,56&minimumPrice=800&maximumPrice=2000&hashSearch=null_null_null_null_2000_null_null_800_null_False__null_2_6_False_False______3-75_____47,56_&UserSorted=true`)
+  
+  
   var annonceSave;
   if(result.statusCode < 300){
     const $ = cheerio.load(result.body)
@@ -46,10 +50,8 @@ router.get('/', async function(req, res, next) {
       // var detail = request ('GET',`https://www.avendrealouer.fr/${link}`)
       // if(detail.statusCode <300){
       //   const $$ = cheerio.load(result.body)
-      //   $('.property-description').find('div').each( function(){
-      //     let fullDesc = $(this).find('.property-description-main').text().trim()
+      //   let fullDesc = $$('.property-description-main').text().trim()
       //     console.log(fullDesc)
-      //   })
       // }
 
       
@@ -71,10 +73,12 @@ router.get('/', async function(req, res, next) {
       
     }) 
   } 
+}
   
   res.json(annonceSave); 
 });
  
+
 /* ROUTES SignUp Hasni */
 
 router.post("/SingUp", async function(req, res,next){
@@ -87,6 +91,7 @@ router.post("/SingUp", async function(req, res,next){
     salt :salt
   })
   await newUser.save();
+  console.log('newUser :', newUser);
  res.json({sucess:true,newUser})
 })
 
@@ -119,7 +124,7 @@ router.post('/signIn', async function(req, res, next) {
 });
 
 
-// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO
+// UPLOAD DOCUMENT DEPUIS APPAREIL PHOTO - RESTE A FAIRE§§§
 router.post('/uploadPhoto', async function(req, res, next) {
   
   var imagePath = './tmp/'+uniqid()+'.jpg';
@@ -140,13 +145,24 @@ router.post('/uploadPhoto', async function(req, res, next) {
 // UPLOAD DOCUMENT DEPUIS LE TELEPHONE
 router.post('/uploadfromphone', async function(req, res, next) {
 
-  console.log('req.files.doc :', req.files.doc);
   var imagePath = './tmp/'+uniqid()+'.jpg';
   var resultCopy = await req.files.doc.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
   
+  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
+
+  var user = await userModel.findOne({nom: 'Fiorese'});
+
+  var docUploaded={
+    type: req.files.doc.name,
+    url: resultCloudinary.secure_url
+  }
+
+  user.documents.push(docUploaded);
+  var userSaved = await user.save();
+
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', resultCloudinary, countID} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
@@ -155,6 +171,15 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 })
 
+router.get('/getDocuments', async function (req, res, next){
+  
+
+  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
+  
+  var user = await userModel.findOne({nom: 'Fiorese'});
+
+  res.json({result: 'OK', documents: user.documents});
+})
 
 
 module.exports = router;
