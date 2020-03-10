@@ -81,8 +81,7 @@ router.get('/', async function(req, res, next) {
  
 router.get('/RecoverAnnonce', async function(req, res, next) {
   var rep = await annonceModel.find();
-
-
+  
   res.json({success: true, rep});
  })
 
@@ -109,13 +108,13 @@ router.post("/SingUp", async function(req, res,next){
 router.post('/signIn', async function(req, res, next) {
   console.log("red body",req.body.email, req.body.mdp)
 	if (req.body.email && req.body.mdp) {
-		
-		let userObj = await userModel.findOne({ email: req.body.email });
-    console.log(userObj);
-		if( userObj ) {
+    
+    let userObj = await userModel.findOne({ email: req.body.email });
+    
+    if( userObj ) {
       let hash = SHA256(req.body.mdp + userObj.salt).toString(encBase64);
 			if ( hash === userObj.password ){
-        res.json({ success: true });
+        res.json({ success: true});
       } else {
         console.log("mauvais mdp",userObj)
 				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
