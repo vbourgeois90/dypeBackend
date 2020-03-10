@@ -6,7 +6,15 @@ const documentSchema = mongoose.Schema({
     filename: String
 });
 
+<<<<<<< HEAD
 
+=======
+const criteresSchema = mongoose.Schema({
+    budgetMin: Number,
+    budgetMax: Number,
+    ville: String
+})
+>>>>>>> 8840d1faf8ccb4af541a8d1598a8d60924054cb6
 
 const userSchema = mongoose.Schema({
     nom: String, 
@@ -20,8 +28,13 @@ const userSchema = mongoose.Schema({
     age: Number,
     probleme: Number,
     validationDossier: Boolean,
+<<<<<<< HEAD
     documents: [documentSchema],
     favoris : Array
+=======
+    criteres: criteresSchema,
+    documents: [documentSchema]
+>>>>>>> 8840d1faf8ccb4af541a8d1598a8d60924054cb6
 });
 
 const userModel = mongoose.model('users', userSchema);
