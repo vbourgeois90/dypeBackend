@@ -6,6 +6,12 @@ const documentSchema = mongoose.Schema({
     filename: String
 });
 
+const criteresSchema = mongoose.Schema({
+    budgetMin: Number,
+    budgetMax: Number,
+    ville: String
+})
+
 const userSchema = mongoose.Schema({
     nom: String, 
     prenom: String,
@@ -18,6 +24,7 @@ const userSchema = mongoose.Schema({
     age: Number,
     probleme: Number,
     validationDossier: Boolean,
+    criteres: criteresSchema,
     documents: [documentSchema]
 });
 
