@@ -116,6 +116,7 @@ router.post('/signIn', async function(req, res, next) {
 		if( userObj ) {
       let hash = SHA256(req.body.mdp + userObj.salt).toString(encBase64);
 			if ( hash === userObj.password ){
+        console.log("VERIF")
         res.json({ success: true });
       } else {
         console.log("mauvais mdp",userObj)
@@ -263,9 +264,9 @@ router.post('/annonces', async function(req, res, next) {
 
 router.post('/recherche', async function(req, res, next) {
   
-  var user = await userModel.findOne(token)
-
-  var criteres = UserModel({
+  var user = await userModel.findOne(req.body.token)
+  console.log(user)
+  var criteres = user({
     criteres: {
       ville: req.body.ville,
       budgetMin: req.body.budgetMin,
@@ -273,7 +274,7 @@ router.post('/recherche', async function(req, res, next) {
     }
   })
 
-  var criteresSaved = 
+  // var criteresSaved = 
 
   res.json({criteres})
 })
