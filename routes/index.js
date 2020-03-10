@@ -30,21 +30,22 @@ const departement = [{name:"3-75"},{name:"3-78"},{name:"3-77"},{name:"3-92"},{na
 router.get('/', async function(req, res, next) {
   
   for(var i = 0; i<departement.length;i++){
+
     var result = request('GET',`https://www.avendrealouer.fr/recherche.html?pageIndex=1&pageSize=25&sortPropertyName=ReleaseDate&sortDirection=Descending&searchTypeID=2&typeGroupCategoryID=6&localityIds=${departement[i].name}&typeGroupIds=47,56&minimumPrice=800&maximumPrice=2000&hashSearch=null_null_null_null_2000_null_null_800_null_False__null_2_6_False_False______3-75_____47,56_&UserSorted=true`)
   
   
-  var annonceSave;
-  if(result.statusCode < 300){
-    const $ = cheerio.load(result.body)
-    $('.mode-list').children().each( async function(){
-      let lieux = $(this).find('.loca').text().trim()
-      let price = $(this).find('.price').text().trim()
-      let type = $(this).find('li.first').text().trim()
-      let description = $(this).find('.propShortDesc').text().trim()
-      let img = $(this).find('.product-media').children().attr('src')
-      let link = $(this).find('.product-media').parent().attr('href')
-      let piece = $(this).find('.first').next().text().trim()
-      let m2 = $(this).find('.first').next().next().text().trim()
+    var annonceSave;
+    if(result.statusCode < 300){
+      const $ = cheerio.load(result.body)
+      $('.mode-list').children().each( async function(){
+        let lieux = $(this).find('.loca').text().trim()
+        let price = $(this).find('.price').text().trim()
+        let type = $(this).find('li.first').text().trim()
+        let description = $(this).find('.propShortDesc').text().trim()
+        let img = $(this).find('.product-media').children().attr('src')
+        let link = $(this).find('.product-media').parent().attr('href')
+        let piece = $(this).find('.first').next().text().trim()
+        let m2 = $(this).find('.first').next().next().text().trim()
 
 
       // var detail = request ('GET',`https://www.avendrealouer.fr/${link}`)
@@ -146,7 +147,7 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
   console.log('req.files :', req.files);
 
-  var user = await userModel.findOne({nom: 'Majax'});
+  let user = await userModel.findOne({nom: 'Majax'});
 
   var docUploaded={
 
@@ -211,6 +212,22 @@ router.get('/getDocuments', async function (req, res, next){
 
   res.json({result: 'OK', documents: user.documents});
 })
+
+
+// AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
+
+router.delete('/deleteDocument/:id', async function (req, res, next){
+
+  let user = await userModel.findOne({nom: 'Majax'});
+
+  let index=user.documents.findIndex(document => document._id == req.params.id);
+  user.documents.splice(index, 1);
+  let userSaved = await user.save();
+
+  res.json({result: 'OK'});
+
+})
+
 
 
 module.exports = router;
