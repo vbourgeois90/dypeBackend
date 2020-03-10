@@ -145,13 +145,10 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
 
-  console.log('req.files :', req.files);
-
   let user = await userModel.findOne({nom: 'Majax'});
 
   var docUploaded={
-
-    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR ICI
+    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR DANS LE TYPE ICI
     type: req.files.photo.name,
     url: resultCloudinary.secure_url
   }
@@ -159,9 +156,11 @@ router.post('/uploadfromcamera', async function(req, res, next) {
   user.documents.push(docUploaded);
   var userSaved = await user.save();
 
+  let lastIndex=userSaved.documents.length;
+  let docUploadedWithID=userSaved.documents[lastIndex-1];
 
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', docUploaded} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded: docUploadedWithID} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
@@ -193,8 +192,11 @@ router.post('/uploadfromphone', async function(req, res, next) {
   user.documents.push(docUploaded);
   var userSaved = await user.save();
 
+  let lastIndex=userSaved.documents.length;
+  let docUploadedWithID=userSaved.documents[lastIndex-1];
+
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', docUploaded} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded: docUploadedWithID} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
