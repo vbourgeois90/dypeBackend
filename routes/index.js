@@ -214,7 +214,6 @@ router.get('/getDocuments', async function (req, res, next){
 })
 
 
-<<<<<<< HEAD
 // AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
 router.delete('/deleteDocument/:id', async function (req, res, next){
@@ -230,7 +229,6 @@ router.delete('/deleteDocument/:id', async function (req, res, next){
 })
 
 
-=======
 router.post('/annonces', async function(req, res, next) {
 
   var newAnnonce = new annonceModel({
@@ -263,6 +261,5 @@ router.post('/annonces', async function(req, res, next) {
 router.post()
 
 });
->>>>>>> b8ca3f825fa83a3c2c153a408c547ffc5519b0e0
 
 module.exports = router;
