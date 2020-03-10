@@ -112,11 +112,12 @@ router.post('/signIn', async function(req, res, next) {
 	if (req.body.email && req.body.mdp) {
 		
 		let userObj = await userModel.findOne({ email: req.body.email });
-    console.log(userObj);
 		if( userObj ) {
+      var token = userObj.token;
       let hash = SHA256(req.body.mdp + userObj.salt).toString(encBase64);
 			if ( hash === userObj.password ){
-        res.json({ success: true });
+        console.log("OK")        
+        res.json({ success: true, monToken: token});
       } else {
         console.log("mauvais mdp",userObj)
 				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
@@ -215,6 +216,16 @@ router.get('/getDocuments', async function (req, res, next){
   res.json({result: 'OK', documents: user.documents});
 })
 
+router.post('/addLike',async function (req,res,next){
+  var id = req.body.idAnnonceLiked; 
+  var user = await userModel.findOne({token : req.body.token})
+  console.log(id)
+  
+  user.favoris.push(id);
+  var userSaved = await user.save();
+  console.log(userSaved)
+  res.json({})
+})
 
 // AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
@@ -265,9 +276,9 @@ router.post('/annonces', async function(req, res, next) {
 
 router.post('/recherche', async function(req, res, next) {
   
-  var user = await userModel.findOne(token)
-
-  var criteres = UserModel({
+  var user = await userModel.findOne(req.body.token)
+  console.log(user)
+  var criteres = user({
     criteres: {
       ville: req.body.ville,
       budgetMin: req.body.budgetMin,
@@ -275,7 +286,7 @@ router.post('/recherche', async function(req, res, next) {
     }
   })
 
-  var criteresSaved = 
+  // var criteresSaved = 
 
   res.json({criteres})
 })

@@ -6,6 +6,7 @@ const documentSchema = mongoose.Schema({
     filename: String
 });
 
+
 const criteresSchema = mongoose.Schema({
     budgetMin: Number,
     budgetMax: Number,
@@ -24,8 +25,10 @@ const userSchema = mongoose.Schema({
     age: Number,
     probleme: Number,
     validationDossier: Boolean,
+    documents: [documentSchema],
+    favoris : Array,
     criteres: criteresSchema,
-    documents: [documentSchema]
+    
 });
 
 const userModel = mongoose.model('users', userSchema);
