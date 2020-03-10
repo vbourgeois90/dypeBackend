@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
     sexe: String,
     age: Number,
     probleme: Number,
+    validationDossier: Boolean,
     documents: [documentSchema]
 });
 

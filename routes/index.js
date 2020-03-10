@@ -92,12 +92,13 @@ router.get('/RecoverAnnonce', async function(req, res, next) {
 
 router.post("/SingUp", async function(req, res,next){
   var newUser = new userModel ({
-    nom: req.body.nom, 
+    nom: req.body.nom,
     prenom: req.body.prenom,
     email: req.body.email,
     password: SHA256(req.body.mdp + salt).toString(encBase64),
     token : uid2(15),
-    salt :salt
+    salt :salt,
+    validationDossier: false
   })
   await newUser.save();
   res.json({sucess:true,newUser})
@@ -171,6 +172,9 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
 // UPLOAD DOCUMENT DEPUIS LE TELEPHONE
 router.post('/uploadfromphone', async function(req, res, next) {
+
+
+  // console.log('req.body :', req.body); POUR RECUPERER AU PROPRE L'INFORMATION DE TYPE DE FICHIER
 
   var imagePath = './tmp/'+uniqid()+'.jpg';
   var resultCopy = await req.files.doc.mv(imagePath);
