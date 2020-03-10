@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 const annonceSchema = mongoose.Schema({
-    localisation: String,
+    images: Array,
+    ville: String,
+    codePostal: Number,
+    longitude: Number,
+    latitude: Number,
     surface: String,
     nbPiece: String,
     prix: String,
@@ -18,7 +22,6 @@ const annonceSchema = mongoose.Schema({
     cave: Boolean,
     chauffage: String,
     ascenseur: Boolean,
-    image: String,
     lien: String,
     descriptionBref: String,
     agenceId: { type: mongoose.Schema.Types.ObjectId, ref: 'agences' }

@@ -214,6 +214,7 @@ router.get('/getDocuments', async function (req, res, next){
 })
 
 
+<<<<<<< HEAD
 // AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
 router.delete('/deleteDocument/:id', async function (req, res, next){
@@ -229,5 +230,39 @@ router.delete('/deleteDocument/:id', async function (req, res, next){
 })
 
 
+=======
+router.post('/annonces', async function(req, res, next) {
+
+  var newAnnonce = new annonceModel({
+    images: [req.body.images],
+    ville: req.body.ville,
+    codePostal: req.body.codePostal,
+    surface: req.body.surface,
+    nbPiece: req.body.nbPiece,
+    prix: req.body.prix,
+    typeDeBien: req.body.typeDeBien,
+    perfEnergetique: req.body.perfEnergetique,
+    chambre: req.body.chambre,
+    salleDeBien: req.body.salleDeBien,
+    toilette: req.body.toilette,
+    balcon: req.body.balcon,
+    digicode: req.body.digicode,
+    interphone: req.body.interphone,
+    terrasse: req.body.terrasse,
+    parking: req.body.parking,
+    cave: req.body.cave,
+    chauffage: req.body.chauffage,
+    ascenseur: req.body.ascenseur,
+    // agenceId: "foncia"
+  })
+
+  var saveAnnonce = await newAnnonce.save()
+
+  res.json({success: true, saveAnnonce });
+
+router.post()
+
+});
+>>>>>>> b8ca3f825fa83a3c2c153a408c547ffc5519b0e0
 
 module.exports = router;
