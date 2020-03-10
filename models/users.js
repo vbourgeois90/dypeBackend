@@ -6,6 +6,8 @@ const documentSchema = mongoose.Schema({
     filename: String
 });
 
+
+
 const userSchema = mongoose.Schema({
     nom: String, 
     prenom: String,
@@ -18,7 +20,8 @@ const userSchema = mongoose.Schema({
     age: Number,
     probleme: Number,
     validationDossier: Boolean,
-    documents: [documentSchema]
+    documents: [documentSchema],
+    favoris : Array
 });
 
 const userModel = mongoose.model('users', userSchema);
