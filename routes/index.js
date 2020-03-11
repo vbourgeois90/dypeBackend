@@ -102,6 +102,7 @@ router.post("/SingUp", async function(req, res,next){
     validationDossier: false
   })
   await newUser.save();
+  console.log(newUser)
   res.json({sucess:true,newUser})
 })
 
@@ -276,29 +277,35 @@ router.post('/annonces', async function(req, res, next) {
 
 router.post('/recherche', async function(req, res, next) {
   
-  var user = await userModel.findOne(req.body.token)
-  console.log(user)
-  var criteres = user({
-    criteres: {
+  var user = await userModel.findOne({token: req.body.token})
+  
+  // console.log('eeeeeee', user.token)
+  
+  user.criteres = {
       ville: req.body.ville,
       budgetMin: req.body.budgetMin,
       budgetMax: req.body.budgetMax
-    }
-  })
+  }
+  // console.log(user)
 
-  // var criteresSaved = 
+  var userSaved = await user.save();
 
-  res.json({criteres})
+  res.json(userSaved.criteres)
 })
 
-router.get('/mesMatchs', async function(req, res, next) {
+router.post('/mesMatchs', async function(req, res, next) {
 
-  // console.log("rrrrr")
-
+  console.log('zzz',req.body)
+  var user = await userModel.findOne({token:req.body.token})
+ 
+  console.log('rr',user)
   var annonces = await annonceModel.find({
-    ville: 'Versailles'
+    ville: user.criteres.ville,
+    budgetMin: user.criteres.budgetMin,
+    budgetMax: user.criteres.budgetMax
   })
 
+  console.log('xxxx',annonces)
   res.json({annonces})
 });
 
