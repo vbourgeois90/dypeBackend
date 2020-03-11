@@ -245,41 +245,43 @@ router.delete('/deleteDocument/:id', async function (req, res, next){
 
 router.post('/annonces', async function(req, res, next) {
 
-  // var newAnnonce = new annonceModel({
-  //   images: [req.body.images],
-  //   ville: req.body.ville,
-  //   codePostal: req.body.codePostal,
-  //   surface: req.body.surface,
-  //   nbPiece: req.body.nbPiece,
-  //   prix: req.body.prix,
-  //   typeDeBien: req.body.typeDeBien,
-  //   perfEnergetique: req.body.perfEnergetique,
-  //   chambre: req.body.chambre,
-  //   salleDeBien: req.body.salleDeBien,
-  //   toilette: req.body.toilette,
-  //   balcon: req.body.balcon,
-  //   digicode: req.body.digicode,
-  //   interphone: req.body.interphone,
-  //   terrasse: req.body.terrasse,
-  //   parking: req.body.parking,
-  //   cave: req.body.cave,
-  //   chauffage: req.body.chauffage,
-  //   ascenseur: req.body.ascenseur,
-  //   // agenceId: "foncia"
-  // })
+  var newAnnonce = new annonceModel({
+    images: [req.body.images],
+    ville: req.body.ville,
+    codePostal: req.body.codePostal,
+    surface: req.body.surface,
+    nbPiece: req.body.nbPiece,
+    prix: req.body.prix,
+    typeDeBien: req.body.typeDeBien,
+    perfEnergetique: req.body.perfEnergetique,
+    chambre: req.body.chambre,
+    salleDeBien: req.body.salleDeBien,
+    toilette: req.body.toilette,
+    balcon: req.body.balcon,
+    digicode: req.body.digicode,
+    interphone: req.body.interphone,
+    terrasse: req.body.terrasse,
+    parking: req.body.parking,
+    cave: req.body.cave,
+    chauffage: req.body.chauffage,
+    ascenseur: req.body.ascenseur,
+    // agenceId: "foncia"
+  })
 
-  // var annonces = await newAnnonce.save()
+  var annonces = await newAnnonce.save()
 
-  res.json({success: true, saveAnnonce });
+  res.json({success: true, annonces });
 
   
 });
 
 router.post('/recherche', async function(req, res, next) {
   
+  console.log('TOKEN', req.body.token);
+
   var user = await userModel.findOne({token: req.body.token})
   
-  // console.log('eeeeeee', user.token)
+  console.log('USER', user)
   
   user.criteres = {
       ville: req.body.ville,
@@ -295,17 +297,17 @@ router.post('/recherche', async function(req, res, next) {
 
 router.post('/mesMatchs', async function(req, res, next) {
 
-  console.log('zzz',req.body)
+  console.log('REQBODY',req.body)
   var user = await userModel.findOne({token:req.body.token})
  
-  console.log('rr',user)
+  console.log('USER',user.criteres.budgetMax)
   var annonces = await annonceModel.find({
     ville: user.criteres.ville,
-    budgetMin: user.criteres.budgetMin,
-    budgetMax: user.criteres.budgetMax
+    prix: {$lte: user.criteres.budgetMax}
+  
   })
 
-  console.log('xxxx',annonces)
+  console.log('xxxx', annonces)
   res.json({annonces})
 });
 
