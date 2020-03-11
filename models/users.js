@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const documentSchema = mongoose.Schema({
     type: String,
     url: String,
-    filename: String
+    filename: String,
+    dateAjout: Date
 });
 
 

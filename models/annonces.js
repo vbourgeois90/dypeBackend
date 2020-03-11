@@ -24,7 +24,9 @@ const annonceSchema = mongoose.Schema({
     ascenseur: Boolean,
     lien: String,
     descriptionBref: String,
-    agenceId: { type: mongoose.Schema.Types.ObjectId, ref: 'agences' }
+    agenceId: { type: mongoose.Schema.Types.ObjectId, ref: 'agences' },
+    dispoVisite: Array,
+    dispo: Boolean
 });
 
 const annonceModel = mongoose.model('annonces', annonceSchema);
