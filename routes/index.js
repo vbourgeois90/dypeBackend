@@ -309,5 +309,9 @@ router.post('/mesMatchs', async function(req, res, next) {
   res.json({annonces})
 });
 
+router.post('/afficherFav',async function(req,res,next){
+console.log('hh',req.body.theToken)
+  res.json({});
+});
 
 module.exports = router;
