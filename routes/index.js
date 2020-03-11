@@ -141,13 +141,13 @@ router.post('/uploadfromcamera', async function(req, res, next) {
   
   console.log('req.files :', req.files);
 
-  var imagePath = './tmp/'+uniqid()+'.jpg';
+  var imagePath = './'+uniqid()+'.jpg';
   var resultCopy = await req.files.photo.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
 
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
-
-  let user = await userModel.findOne({nom: 'Majax'});
+console.log('req.body.token' , req.body.token);
+  let user = await userModel.findOne({token: req.body.token});
 
   var docUploaded={
     // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR DANS LE TYPE ICI
@@ -178,13 +178,13 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
   // console.log('req.body :', req.body); POUR RECUPERER AU PROPRE L'INFORMATION DE TYPE DE FICHIER
 
-  var imagePath = './tmp/'+uniqid()+'.jpg';
+  var imagePath = './'+uniqid()+'.jpg';
   var resultCopy = await req.files.doc.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
   
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
 
-  var user = await userModel.findOne({nom: 'Majax'});
+  var user = await userModel.findOne({token: req.body.token});
 
   var docUploaded={
     type: req.files.doc.name,
@@ -207,13 +207,13 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 })
 
-router.get('/getDocuments', async function (req, res, next){
+router.get('/getDocuments/:token', async function (req, res, next){
   
 
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
-  
-  var user = await userModel.findOne({nom: 'Majax'});
-
+  console.log('req :', req.params.token);
+  var user = await userModel.findOne({token: req.params.token});
+  console.log('user :', user);
   res.json({result: 'OK', documents: user.documents});
 })
 
@@ -230,10 +230,10 @@ router.post('/addLike',async function (req,res,next){
 
 // AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
-router.delete('/deleteDocument/:id', async function (req, res, next){
+router.delete('/deleteDocument/:token/:id', async function (req, res, next){
 
-  let user = await userModel.findOne({nom: 'Majax'});
-
+  let user = await userModel.findOne({token: req.params.token});
+  console.log('user :', user);
   let index=user.documents.findIndex(document => document._id == req.params.id);
   user.documents.splice(index, 1);
   let userSaved = await user.save();
@@ -300,14 +300,14 @@ router.post('/mesMatchs', async function(req, res, next) {
   console.log('REQBODY',req.body)
   var user = await userModel.findOne({token:req.body.token})
  
-  console.log('USER',user.criteres.budgetMax)
+  console.log('USER',user.criteres)
   var annonces = await annonceModel.find({
-    ville: user.criteres.ville,
-    prix: {$lte: user.criteres.budgetMax}
+    ville: user.criteres.ville.trim(),
+    $and: [{prix:{$gte: user.criteres.budgetMin}}, {prix:{$lte: user.criteres.budgetMax}}] 
   
   })
 
-  console.log('xxxx', annonces)
+  // console.log('xxxx', annonces)
   res.json({annonces})
 });
 
