@@ -173,6 +173,7 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
 
 // UPLOAD DOCUMENT DEPUIS LE TELEPHONE
+      // OBSERVATION: ON PEUT RECUPERER LES DONNEES DE DATE D'AJOUT DU DOCUMENT VIA REQ - POUR DEMANDER LES DERNIERS BULLETINS DE SALAIRE PAR EX SI LE DERNIER A ETE UPLOADE IL Y A PLUS D'UN MOIS
 router.post('/uploadfromphone', async function(req, res, next) {
 
 
@@ -207,9 +208,10 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 })
 
+
+// RECUPERATION DES DOCUMENTS DE L'UTILISATEUR DE LA BDD AU 1ER CHARGEMENT DU COMPOSANT MES DOCUMENTS
 router.get('/getDocuments', async function (req, res, next){
   
-
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   
   var user = await userModel.findOne({nom: 'Majax'});
@@ -228,6 +230,7 @@ router.post('/addLike',async function (req,res,next){
   res.json({})
 })
 
+// SUPPRESSION D'UN DOCUMENT 
 // AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
 router.delete('/deleteDocument/:id', async function (req, res, next){
@@ -310,6 +313,28 @@ router.post('/mesMatchs', async function(req, res, next) {
   console.log('xxxx', annonces)
   res.json({annonces})
 });
+
+
+// OUTIL D'AJOUT DE DISPONIBILITES EN DUR DANS LA BDD - APPELER AVEC POSTMAN POUR LE MOMENT PUIS BACKOFFICE
+router.post('/addDispo', async function(req, res, next){
+
+  let annonce = await annonceModel.findOne({_id: '5e68b0110d86c75e98885cc8'});
+
+  let dispoA = new Date ('2020-03-18T10:30:00.470Z');
+  let dispoB = new Date ('2020-03-18T11:00:00.470Z');
+  let dispoC = new Date ('2020-03-18T17:00:00.470Z');
+  let dispoD = new Date ('2020-03-18T15:00:00.470Z');
+  let dispoE = new Date ('2020-03-19T10:00:00.470Z');
+  let dispoF = new Date ('2020-03-19T16:00:00.470Z');
+  if(annonce){
+    annonce.dispoVisite.push(dispoA, dispoB, dispoC, dispoD, dispoE, dispoF);
+  }
+  
+  let annonceSaved = await annonce.save();
+
+
+  res.json({result: 'OK'});
+})
 
 
 module.exports = router;
