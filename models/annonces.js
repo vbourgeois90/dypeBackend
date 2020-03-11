@@ -8,7 +8,7 @@ const annonceSchema = mongoose.Schema({
     latitude: Number,
     surface: String,
     nbPiece: String,
-    prix: String,
+    prix: Number,
     typeDeBien: String,
     perfEnergetique: Number,
     chambre: Number,
