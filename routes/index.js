@@ -365,9 +365,23 @@ router.post('/addDispo', async function(req, res, next){
   
   let annonceSaved = await annonce.save();
 
-
   res.json({result: 'OK'});
 })
+
+
+/// §§§§ PAS ENCORE TERMINE §§§§§
+// router.post('/saveRdv', async function(req, res, next){   
+
+//   console.log('req.body :', req.body);
+//   var newRdv = new rdvModel ({
+//     date: req.body.date,
+//     agenceId: req.body.agence,
+//     userId: req.body.token, 
+//     lieu: req.body.annonce
+//   })
+//   await newRdv.save();
+
+// })
 
 
 module.exports = router;
