@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const documentSchema = mongoose.Schema({
     type: String,
     url: String,
-    filename: String
+    filename: String,
+    dateAjout: Date
 });
+
 
 const criteresSchema = mongoose.Schema({
     budgetMin: Number,
@@ -24,8 +26,10 @@ const userSchema = mongoose.Schema({
     age: Number,
     probleme: Number,
     validationDossier: Boolean,
+    documents: [documentSchema],
+    favoris : Array,
     criteres: criteresSchema,
-    documents: [documentSchema]
+    
 });
 
 const userModel = mongoose.model('users', userSchema);

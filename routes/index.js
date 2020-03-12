@@ -101,6 +101,7 @@ router.post("/SingUp", async function(req, res,next){
     validationDossier: false
   })
   await newUser.save();
+  console.log(newUser)
   res.json({sucess:true,newUser})
 })
 
@@ -109,13 +110,14 @@ router.post("/SingUp", async function(req, res,next){
 router.post('/signIn', async function(req, res, next) {
   console.log("red body",req.body.email, req.body.mdp)
 	if (req.body.email && req.body.mdp) {
-    
-    let userObj = await userModel.findOne({ email: req.body.email });
-    
-    if( userObj ) {
+		
+		let userObj = await userModel.findOne({ email: req.body.email });
+		if( userObj ) {
+      var token = userObj.token;
       let hash = SHA256(req.body.mdp + userObj.salt).toString(encBase64);
 			if ( hash === userObj.password ){
-        res.json({ success: true});
+        console.log("OK")        
+        res.json({ success: true, monToken: token});
       } else {
         console.log("mauvais mdp",userObj)
 				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
@@ -144,13 +146,10 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
 
-  console.log('req.files :', req.files);
-
   let user = await userModel.findOne({nom: 'Majax'});
 
   var docUploaded={
-
-    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR ICI
+    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR DANS LE TYPE ICI
     type: req.files.photo.name,
     url: resultCloudinary.secure_url
   }
@@ -158,9 +157,11 @@ router.post('/uploadfromcamera', async function(req, res, next) {
   user.documents.push(docUploaded);
   var userSaved = await user.save();
 
+  let lastIndex=userSaved.documents.length;
+  let docUploadedWithID=userSaved.documents[lastIndex-1];
 
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', docUploaded} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded: docUploadedWithID} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
@@ -192,8 +193,11 @@ router.post('/uploadfromphone', async function(req, res, next) {
   user.documents.push(docUploaded);
   var userSaved = await user.save();
 
+  let lastIndex=userSaved.documents.length;
+  let docUploadedWithID=userSaved.documents[lastIndex-1];
+
   if(!resultCopy) {
-    res.json({result: true, message: 'File uploaded!', docUploaded} );     
+    res.json({result: true, message: 'File uploaded!', docUploaded: docUploadedWithID} );     
   } else {
     res.json({result: false, message: resultCopy} );
   }
@@ -212,6 +216,16 @@ router.get('/getDocuments', async function (req, res, next){
   res.json({result: 'OK', documents: user.documents});
 })
 
+router.post('/addLike',async function (req,res,next){
+  var id = req.body.idAnnonceLiked; 
+  var user = await userModel.findOne({token : req.body.token})
+  console.log(id)
+  
+  user.favoris.push(id);
+  var userSaved = await user.save();
+  console.log(userSaved)
+  res.json({})
+})
 
 // AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
@@ -230,64 +244,67 @@ router.delete('/deleteDocument/:id', async function (req, res, next){
 
 router.post('/annonces', async function(req, res, next) {
 
-  // var newAnnonce = new annonceModel({
-  //   images: [req.body.images],
-  //   ville: req.body.ville,
-  //   codePostal: req.body.codePostal,
-  //   surface: req.body.surface,
-  //   nbPiece: req.body.nbPiece,
-  //   prix: req.body.prix,
-  //   typeDeBien: req.body.typeDeBien,
-  //   perfEnergetique: req.body.perfEnergetique,
-  //   chambre: req.body.chambre,
-  //   salleDeBien: req.body.salleDeBien,
-  //   toilette: req.body.toilette,
-  //   balcon: req.body.balcon,
-  //   digicode: req.body.digicode,
-  //   interphone: req.body.interphone,
-  //   terrasse: req.body.terrasse,
-  //   parking: req.body.parking,
-  //   cave: req.body.cave,
-  //   chauffage: req.body.chauffage,
-  //   ascenseur: req.body.ascenseur,
-  //   // agenceId: "foncia"
-  // })
+  var newAnnonce = new annonceModel({
+    images: [req.body.images],
+    ville: req.body.ville,
+    codePostal: req.body.codePostal,
+    surface: req.body.surface,
+    nbPiece: req.body.nbPiece,
+    prix: req.body.prix,
+    typeDeBien: req.body.typeDeBien,
+    perfEnergetique: req.body.perfEnergetique,
+    chambre: req.body.chambre,
+    salleDeBien: req.body.salleDeBien,
+    toilette: req.body.toilette,
+    balcon: req.body.balcon,
+    digicode: req.body.digicode,
+    interphone: req.body.interphone,
+    terrasse: req.body.terrasse,
+    parking: req.body.parking,
+    cave: req.body.cave,
+    chauffage: req.body.chauffage,
+    ascenseur: req.body.ascenseur,
+    // agenceId: "foncia"
+  })
 
-  // var annonces = await newAnnonce.save()
+  var annonces = await newAnnonce.save()
 
-  res.json({success: true, saveAnnonce });
+  res.json({success: true, annonces });
 
   
 });
 
 router.post('/recherche', async function(req, res, next) {
   
-  var user = await userModel.findOne(token)
+  console.log('TOKEN', req.body.token);
 
-  var criteres = UserModel({
-    criteres: {
+  var user = await userModel.findOne({token: req.body.token})
+  
+  console.log('USER', user)
+  
+  user.criteres = {
       ville: req.body.ville,
       budgetMin: req.body.budgetMin,
       budgetMax: req.body.budgetMax
-    }
-  })
+  }
+  // console.log(user)
 
-  var criteresSaved = 
+  var userSaved = await user.save();
 
-  res.json({criteres})
+  res.json(userSaved.criteres)
 })
 
-router.get('/mesMatchs', async function(req, res, next) {
+router.post('/mesMatchs', async function(req, res, next) {
 
-  // console.log("rrrrr")
-
+  var user = await userModel.findOne({token:req.body.token})
   var annonces = await annonceModel.find({
-    ville: 'Versailles'
+    ville: user.criteres.ville,
+    // prix: {$lte: user.criteres.budgetMax}
+  
   })
-
+  console.log('annonces', annonces)
   res.json({annonces})
 });
-
 
 
 module.exports = router;
