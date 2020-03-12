@@ -211,12 +211,22 @@ router.get('/getDocuments/:token', async function (req, res, next){
 })
 
 router.post('/addLike',async function (req,res,next){
-  var id = req.body.idAnnonceLiked; 
+
   var user = await userModel.findOne({token : req.body.token})
-  
-  user.favoris.push(id);
+
+  console.log(user.favoris)
+
+  let index = user.favoris.findIndex(id=>id === req.body.idAnnonceLiked)
+  if(index === -1){
+      user.favoris.push(req.body.idAnnonceLiked);
+    }
+    
   var userSaved = await user.save();
-  console.log('User avec id annonce',userSaved)
+    
+  console.log("USERSAVED", userSaved)
+  
+  
+
   res.json({})
 })
 
