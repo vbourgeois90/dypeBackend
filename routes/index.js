@@ -102,7 +102,6 @@ router.post("/SingUp", async function(req, res,next){
     validationDossier: false
   })
   await newUser.save();
-  console.log(newUser)
   res.json({sucess:true,newUser})
 })
 
@@ -220,11 +219,10 @@ router.get('/getDocuments', async function (req, res, next){
 router.post('/addLike',async function (req,res,next){
   var id = req.body.idAnnonceLiked; 
   var user = await userModel.findOne({token : req.body.token})
-  console.log(id)
   
   user.favoris.push(id);
   var userSaved = await user.save();
-  console.log(userSaved)
+  console.log('User avec id annonce',userSaved)
   res.json({})
 })
 
@@ -297,23 +295,51 @@ router.post('/recherche', async function(req, res, next) {
 
 router.post('/mesMatchs', async function(req, res, next) {
 
-  console.log('REQBODY',req.body)
+  // console.log('REQBODY',req.body)
   var user = await userModel.findOne({token:req.body.token})
  
-  console.log('USER',user.criteres.budgetMax)
+  // console.log('USER',user.criteres.budgetMax)
   var annonces = await annonceModel.find({
     ville: user.criteres.ville,
     prix: {$lte: user.criteres.budgetMax}
   
   })
 
-  console.log('xxxx', annonces)
+  // console.log('xxxx', annonces)
   res.json({annonces})
 });
 
-router.post('/afficherFav',async function(req,res,next){
-console.log('hh',req.body.theToken)
-  res.json({});
-});
 
-module.exports = router;
+
+router.post('/saveToStore',async function(req,res,next){
+  console.log('hello',req.body.token)
+  
+  var annonces;
+  var user = await userModel.findOne({
+    token : req.body.token
+  })
+  
+  // console.log('user a envoyer',user.favoris)
+  
+  for(var i = 0; i <user.favoris.length; i++){
+    var annoncesList = await annonceModel.find({
+      _id : user.favoris
+    })
+    // console.log("mes annonces sont",annoncesList)
+  }
+
+    res.json(annoncesList);
+  });
+  router.delete('/deleteFav/:id/:token',async function(req,res,next) {
+    var user = await userModel.findOne({
+      token : req.params.token
+    })
+    console.log(user)
+    let index=user.favoris.findIndex(favori => favori._id === req.params.id);
+  user.favoris.splice(index, 1);
+  let userSaved = await user.save();
+  console.log(userSaved)
+    res.json({})
+  })
+
+module.exports = router; 
