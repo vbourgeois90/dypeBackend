@@ -211,12 +211,22 @@ router.get('/getDocuments/:token', async function (req, res, next){
 })
 
 router.post('/addLike',async function (req,res,next){
-  var id = req.body.idAnnonceLiked; 
+
   var user = await userModel.findOne({token : req.body.token})
-  
-  user.favoris.push(id);
+
+  console.log(user.favoris)
+
+  let index = user.favoris.findIndex(id=>id === req.body.idAnnonceLiked)
+  if(index === -1){
+      user.favoris.push(req.body.idAnnonceLiked);
+    }
+    
   var userSaved = await user.save();
-  console.log('User avec id annonce',userSaved)
+    
+  console.log("USERSAVED", userSaved)
+  
+  
+
   res.json({})
 })
 
@@ -355,9 +365,23 @@ router.post('/addDispo', async function(req, res, next){
   
   let annonceSaved = await annonce.save();
 
-
   res.json({result: 'OK'});
 })
+
+
+/// §§§§ PAS ENCORE TERMINE §§§§§
+// router.post('/saveRdv', async function(req, res, next){   
+
+//   console.log('req.body :', req.body);
+//   var newRdv = new rdvModel ({
+//     date: req.body.date,
+//     agenceId: req.body.agence,
+//     userId: req.body.token, 
+//     lieu: req.body.annonce
+//   })
+//   await newRdv.save();
+
+// })
 
 
 module.exports = router;
