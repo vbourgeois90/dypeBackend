@@ -257,7 +257,7 @@ router.post('/annonces', async function(req, res, next) {
     cave: req.body.cave,
     chauffage: req.body.chauffage,
     ascenseur: req.body.ascenseur,
-    // agenceId: "foncia"
+    agenceId: req.body.agenceId
   })
 
   var annonces = await newAnnonce.save()
