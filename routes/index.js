@@ -144,10 +144,15 @@ router.post('/uploadfromcamera', async function(req, res, next) {
   // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   let user = await userModel.findOne({token: req.body.token});
 
+  let date = new Date();
+
   var docUploaded={
     // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR DANS LE TYPE ICI
-    type: req.files.photo.name,
-    url: resultCloudinary.secure_url
+    filename: req.files.photo.name,
+    url: resultCloudinary.secure_url,
+    dateAjout: date,
+    type: req.body.docType,
+    isValid: false
   }
 
   user.documents.push(docUploaded);
@@ -168,23 +173,22 @@ router.post('/uploadfromcamera', async function(req, res, next) {
 
 
 // UPLOAD DOCUMENT DEPUIS LE TELEPHONE
-      // OBSERVATION: ON PEUT RECUPERER LES DONNEES DE DATE D'AJOUT DU DOCUMENT VIA REQ - POUR DEMANDER LES DERNIERS BULLETINS DE SALAIRE PAR EX SI LE DERNIER A ETE UPLOADE IL Y A PLUS D'UN MOIS
 router.post('/uploadfromphone', async function(req, res, next) {
-
-
-  // console.log('req.body :', req.body); POUR RECUPERER AU PROPRE L'INFORMATION DE TYPE DE FICHIER (VOIR NOTES EN FRONT)
 
   var imagePath = './'+uniqid()+'.jpg';
   var resultCopy = await req.files.doc.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
   
-  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
-
   var user = await userModel.findOne({token: req.body.token});
 
+  let date = new Date();
+
   var docUploaded={
-    type: req.files.doc.name,
-    url: resultCloudinary.secure_url
+    filename: req.files.doc.name,
+    url: resultCloudinary.secure_url,
+    dateAjout: date,
+    type: req.body.docType,
+    isValid: false
   }
 
   user.documents.push(docUploaded);
@@ -351,13 +355,13 @@ module.exports = router;
 // OUTIL D'AJOUT DE DISPONIBILITES EN DUR DANS LA BDD - APPELER AVEC POSTMAN POUR LE MOMENT PUIS BACKOFFICE
 router.post('/addDispo', async function(req, res, next){
 
-  let annonce = await annonceModel.findOne({_id: '5e68b0110d86c75e98885cc8'});
+  let annonce = await annonceModel.findOne({_id: '5e6b6980a2e98623047a8bf3'});
 
   let dispoA = new Date ('2020-03-18T10:30:00.470Z');
   let dispoB = new Date ('2020-03-18T11:00:00.470Z');
   let dispoC = new Date ('2020-03-18T17:00:00.470Z');
-  let dispoD = new Date ('2020-03-18T15:00:00.470Z');
-  let dispoE = new Date ('2020-03-19T10:00:00.470Z');
+  let dispoD = new Date ('2020-03-19T10:00:00.470Z');
+  let dispoE = new Date ('2020-03-19T10:30:00.470Z');
   let dispoF = new Date ('2020-03-19T16:00:00.470Z');
   if(annonce){
     annonce.dispoVisite.push(dispoA, dispoB, dispoC, dispoD, dispoE, dispoF);

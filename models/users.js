@@ -4,7 +4,8 @@ const documentSchema = mongoose.Schema({
     type: String,
     url: String,
     filename: String,
-    dateAjout: Date
+    dateAjout: Date,
+    isValid: Boolean
 });
 
 
