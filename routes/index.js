@@ -116,7 +116,7 @@ router.post('/signIn', async function(req, res, next) {
       let hash = SHA256(req.body.mdp + userObj.salt).toString(encBase64);
 			if ( hash === userObj.password ){
         console.log("OK")        
-        res.json({ success: true, monToken: token});
+        res.json({ success: true, monToken: token, user: userObj});
       } else {
         console.log("mauvais mdp",userObj)
 				res.json({ success: false, error: 'Email ou mot de passe incorrects' });
@@ -246,6 +246,21 @@ router.delete('/deleteDocument/:token/:id', async function (req, res, next){
 
   res.json({result: 'OK'});
 
+});
+
+
+// VALIDATION DU DOSSIER - SOUMETTRE A L'EQUIPE DYPE POUR VALIDATION \\
+router.put('/submitDossier', async function (req, res, next){
+
+  // ON CONSIDERE QUE LE DOSSIER EST VALIDE
+  let user = await userModel.findOne({token: req.body.token});
+  console.log('user :', user);
+  user.validationDossier=true;
+  for(let i=0; i<user.documents.length; i++){
+    user.documents[i].isValid=true;
+  }
+  let userSaved = await user.save();
+  res.json({userSaved});
 })
 
 
@@ -318,7 +333,6 @@ router.post('/mesMatchs', async function(req, res, next) {
 });
 
 
-
 router.post('/saveToStore',async function(req,res,next){
   console.log('hello',req.body.token)
   
@@ -352,6 +366,7 @@ router.post('/saveToStore',async function(req,res,next){
   })
 
 module.exports = router; 
+
 // OUTIL D'AJOUT DE DISPONIBILITES EN DUR DANS LA BDD - APPELER AVEC POSTMAN POUR LE MOMENT PUIS BACKOFFICE
 router.post('/addDispo', async function(req, res, next){
 
