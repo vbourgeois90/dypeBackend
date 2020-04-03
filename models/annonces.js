@@ -1,7 +1,19 @@
 const mongoose = require('mongoose');
 
+const roomImageSchema = mongoose.Schema({
+    nom: String,
+    url: String
+});
+
+// const dispoVisiteSchema = mongoose.Schema({
+//     date: String,
+//     heure: String,
+//     type: String,
+//     booked: Boolean
+// })
+
 const annonceSchema = mongoose.Schema({
-    images: Array,
+    images: [roomImageSchema],
     ville: String,
     codePostal: Number,
     longitude: Number,

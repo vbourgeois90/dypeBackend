@@ -92,6 +92,7 @@ router.get('/RecoverAnnonce', async function(req, res, next) {
 
 router.post("/SingUp", async function(req, res,next){
   var newUser = new userModel ({
+    type: 'utilisateur',
     nom: req.body.nom,
     prenom: req.body.prenom,
     email: req.body.email,
@@ -267,7 +268,10 @@ router.put('/submitDossier', async function (req, res, next){
 router.post('/annonces', async function(req, res, next) {
 
   var newAnnonce = new annonceModel({
-    images: [req.body.images],
+    images: [{
+      nom: req.body.nom,
+      url: req.body.url
+    }],
     ville: req.body.ville,
     codePostal: req.body.codePostal,
     surface: req.body.surface,

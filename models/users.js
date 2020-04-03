@@ -16,6 +16,7 @@ const criteresSchema = mongoose.Schema({
 })
 
 const userSchema = mongoose.Schema({
+    type: String,
     nom: String, 
     prenom: String,
     email: String,
@@ -23,9 +24,11 @@ const userSchema = mongoose.Schema({
     token: String,
     salt: String,
     adresse: String,
+    nbTelephone: String,
     sexe: String,
     age: Number,
     probleme: Number,
+    logoUrl: String,
     validationDossier: Boolean,
     documents: [documentSchema],
     favoris : Array,
