@@ -142,13 +142,11 @@ router.post('/uploadfromcamera', async function(req, res, next) {
   var resultCopy = await req.files.photo.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
 
-  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   let user = await userModel.findOne({token: req.body.token});
 
   let date = new Date();
 
   var docUploaded={
-    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR DANS LE TYPE ICI
     filename: req.files.photo.name,
     url: resultCloudinary.secure_url,
     dateAjout: date,
@@ -236,7 +234,6 @@ router.post('/addLike',async function (req,res,next){
 })
 
 // SUPPRESSION D'UN DOCUMENT 
-// AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
 router.delete('/deleteDocument/:token/:id', async function (req, res, next){
 
@@ -322,17 +319,14 @@ router.post('/recherche', async function(req, res, next) {
 
 router.post('/mesMatchs', async function(req, res, next) {
 
-  // console.log('REQBODY',req.body)
   var user = await userModel.findOne({token:req.body.token})
  
-  // console.log('USER',user.criteres.budgetMax)
   var annonces = await annonceModel.find({
     ville: user.criteres.ville.trim(),
     $and: [{prix:{$gte: user.criteres.budgetMin}}, {prix:{$lte: user.criteres.budgetMax}}] 
   
   })
 
-  // console.log('xxxx', annonces)
   res.json({annonces})
 });
 
@@ -344,14 +338,11 @@ router.post('/saveToStore',async function(req,res,next){
   var user = await userModel.findOne({
     token : req.body.token
   })
-  
-  // console.log('user a envoyer',user.favoris)
-  
+    
   for(var i = 0; i <user.favoris.length; i++){
     var annoncesList = await annonceModel.find({
       _id : user.favoris
     })
-    // console.log("mes annonces sont",annoncesList)
   }
 
     res.json(annoncesList);
