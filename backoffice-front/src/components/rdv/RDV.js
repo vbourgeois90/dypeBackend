@@ -4,20 +4,20 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: '90vh', //SUPPRIMER LE STYLE ET REAJUSTER A VOTRE SAUCE SAMOURAI ALGERIENNE (CA MARCHE COMME LE STYLE REACT NATIVE)
+        height: '90vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
     }
 }));
 
-export default function Locataires(){
+export default function RDV(){
     const classes = useStyles();
 
     return(
         <div>
-            <Drawer activeMenu='2'/>
-            <h1 className={classes.root}>PAGE LOCATAIRES</h1>
+            <Drawer activeMenu='1'/>
+            <h1 className={classes.root}>PAGE RDV</h1>
         </div>
     )
 }

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -26,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth
+    height: '55px',
+    marginLeft: drawerWidth,
+    display: 'flex',
+    justifyContent: 'center'
   },
   toolBar: {
     display: 'flex',
@@ -44,16 +48,17 @@ const useStyles = makeStyles((theme) => ({
       width: '120px',
       alignSelf: 'center',
       margin: '20px'
+  },
+  navlink: {
+    color: 'white',
+    textDecoration: 'none'
   }
 }));
 
-export default function PermanentDrawerLeft() {
+export default function PermanentDrawerLeft(props) {
   const classes = useStyles();
-
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
+  
+  const [selectedIndex, setSelectedIndex] = useState(props.activeMenu);
 
   return (
     <div className={classes.root}>
@@ -95,59 +100,91 @@ export default function PermanentDrawerLeft() {
         />
 
         <List className={classes.listNav}>
+
+          <Link 
+            to='/'
+            onClick={() => setSelectedIndex(0)}
+            className={classes.navlink}
+          >
             <ListItem 
                 button
-                selected={selectedIndex === 0}
-                onClick={(event) => handleListItemClick(event, 0)}      
+                selected={selectedIndex === '0'}
             >
                 <ListItemIcon>
                   <DashboardRoundedIcon />
                 </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
+          </Link>
 
+          <Link 
+            to='/rdv'
+            onClick={() => setSelectedIndex(1)}  
+            className={classes.navlink}
+            
+          >
             <ListItem 
                 button
-                selected={selectedIndex === 1}
-                onClick={(event) => handleListItemClick(event, 1)}      
+                selected={selectedIndex === '1'}
+                // onClick={(event) => handleListItemClick(event, 1)}      
             >
                 <ListItemIcon>
                   <TodayIcon />
                 </ListItemIcon>
               <ListItemText primary="Mes rendez-vous" />
             </ListItem>
-
+          </Link>
+          
+          <Link 
+            to='/locataires' 
+            className={classes.navlink}
+            onClick={() => setSelectedIndex(2)} 
+          >
             <ListItem 
                 button
-                selected={selectedIndex === 2}
-                onClick={(event) => handleListItemClick(event, 2)}      
+                selected={selectedIndex === '2'}     
             >
                 <ListItemIcon>
                   <PeopleAltIcon />
                 </ListItemIcon>
               <ListItemText primary="Locataires" />
             </ListItem>
+          </Link>
+
+          <Link 
+            to='/annonces' 
+            className={classes.navlink}
+            onClick={() => setSelectedIndex(3)}  
+          >
             <ListItem 
                 button
-                selected={selectedIndex === 3}
-                onClick={(event) => handleListItemClick(event, 3)}      
+                selected={selectedIndex === '3'}    
             >
               <ListItemIcon>
                   <HomeWorkRoundedIcon />
                 </ListItemIcon>
               <ListItemText primary="Mes annonces" />
             </ListItem>
+          </Link>
+
+          <Link 
+            to='/stats' 
+            className={classes.navlink}
+            onClick={() => setSelectedIndex(4)}    
+          >
             <ListItem 
                 button
-                selected={selectedIndex === 4}
-                onClick={(event) => handleListItemClick(event, 4)}    
+                selected={selectedIndex === '4'}
             >
                 <ListItemIcon>
                   <BarChartRoundedIcon />
                 </ListItemIcon>
               <ListItemText primary="Statistiques" />
             </ListItem>
+          </Link>
+
         </List>
+        
         {/* <Divider /> */}
       </Drawer>
     </div>

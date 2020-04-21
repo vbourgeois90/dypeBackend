@@ -16,10 +16,38 @@ const useStyles = makeStyles({
 export default function RDV() {
     const classes = useStyles();
     
-    const jour=["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-    const mois=["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+    const listeJour=["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+    const listeMois=["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
     const today = new Date();
-    const date =  today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + today.getFullYear()
+
+    let jour;
+    switch(today.getDay()){
+      case 0:
+        jour=listeJour[6];
+        break;
+      case 1:
+        jour=listeJour[0];
+        break;
+      case 2:
+        jour=listeJour[1];
+        break;
+      case 3:
+        jour=listeJour[2];
+        break;
+      case 4:
+        jour=listeJour[3];
+        break;
+      case 5:
+        jour=listeJour[4];
+        break;
+      case 6:
+        jour=listeJour[5];
+        break;
+      default:
+        console.log('pb de jour');
+    }
+
+    const date =  jour + ' ' + today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + today.getFullYear()
 
 
     return (

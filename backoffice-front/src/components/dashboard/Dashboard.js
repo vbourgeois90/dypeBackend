@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import {Grid, Container, Paper} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
-import MyDrawer from './Drawer'
-import RDV from './RDV';
+import Drawer from './Drawer'
+import RDV from './RDV-card';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,7 +40,7 @@ export default function MyDashboard(){
     return(
     <div className={classes.root}>
 
-      <MyDrawer/>
+      <Drawer activeMenu='0'/>
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
