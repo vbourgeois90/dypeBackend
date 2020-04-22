@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   toolBar: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    marginTop: '3px'
   },
   drawer: {
     width: drawerWidth,

@@ -47,7 +47,52 @@ export default function RDV() {
         console.log('pb de jour');
     }
 
-    const date =  jour + ' ' + today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + today.getFullYear()
+    let mois;
+    switch(today.getMonth()){
+      case 0:
+        mois=listeMois[0];
+        break;
+      case 1:
+        mois=listeMois[1];
+        break;
+      case 2:
+        mois=listeMois[2];
+        break;
+      case 3:
+        mois=listeMois[3];
+        break;
+      case 4:
+        mois=listeMois[4];
+        break;
+      case 5:
+        mois=listeMois[5];
+        break;
+      case 6:
+        mois=listeMois[6];
+        break;
+      case 7:
+        mois=listeMois[7];
+        break;
+      case 8:
+        mois=listeMois[8];
+        break;
+      case 9:
+        mois=listeMois[9];
+        break;
+      case 10:
+        mois=listeMois[10];
+        break;
+      case 11:
+        mois=listeMois[11];
+        break;
+      case 12:
+        mois=listeMois[12];
+        break;
+      default:
+        console.log('pb de mois');
+    }
+
+    const date =  jour + ' ' + today.getDate() + ' ' + mois + ' ' + today.getFullYear()
 
 
     return (
