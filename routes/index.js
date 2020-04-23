@@ -208,7 +208,6 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 router.get('/getDocuments/:token', async function (req, res, next){
   
-  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   var user = await userModel.findOne({token: req.params.token});
   res.json({result: 'OK', documents: user.documents});
 })
@@ -396,6 +395,14 @@ router.post('/addDispo', async function(req, res, next){
 //   await newRdv.save();
 
 // })
+
+
+// BACKOFFICE - RECUPERER LES UTILISATEURS
+router.get('/getUsers', async function(req, res, next){
+  let users = await userModel.find();
+  console.log('users :>> ', users);
+  res.json({users})
+})
 
 
 module.exports = router;

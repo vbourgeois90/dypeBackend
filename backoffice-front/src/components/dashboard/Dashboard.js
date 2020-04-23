@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 
 import {Grid, Container, Paper} from '@material-ui/core'
@@ -35,6 +35,18 @@ const useStyles = makeStyles((theme) => ({
 export default function MyDashboard(){
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    // RECUPERE TOUS LES UTILISATEURS DE LA BDD
+    useEffect(() => {
+      const fetchData = async() => {
+        
+        var rawData = await fetch('/getUsers');
+        var data = await rawData.json();
+        console.log('data :>> ', data);
+  
+      }
+      fetchData();
+    }, []);
 
     return(
     <div className={classes.root}>
