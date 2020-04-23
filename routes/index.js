@@ -142,13 +142,11 @@ router.post('/uploadfromcamera', async function(req, res, next) {
   var resultCopy = await req.files.photo.mv(imagePath);
   var resultCloudinary = await cloudinary.uploader.upload(imagePath);
 
-  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   let user = await userModel.findOne({token: req.body.token});
 
   let date = new Date();
 
   var docUploaded={
-    // FAIRE TRANSITER LE TYPE DE DOCUMENT - ID EN DUR DANS LE TYPE ICI
     filename: req.files.photo.name,
     url: resultCloudinary.secure_url,
     dateAjout: date,
@@ -210,7 +208,6 @@ router.post('/uploadfromphone', async function(req, res, next) {
 
 router.get('/getDocuments/:token', async function (req, res, next){
   
-  // BESOIN DE RECUPERER ET RENSEIGNER LE TOKEN DE L'UTILISATEUR VIA LE FRONT ET LE STORE
   var user = await userModel.findOne({token: req.params.token});
   res.json({result: 'OK', documents: user.documents});
 })
@@ -236,7 +233,6 @@ router.post('/addLike',async function (req,res,next){
 })
 
 // SUPPRESSION D'UN DOCUMENT 
-// AVEC RECUP DU TOKEN UTILISATEUR CHANGER POUR router.delete('/deleteDocument/:user/:id', async function(req, res, next){
 
 router.delete('/deleteDocument/:token/:id', async function (req, res, next){
 
@@ -322,17 +318,14 @@ router.post('/recherche', async function(req, res, next) {
 
 router.post('/mesMatchs', async function(req, res, next) {
 
-  // console.log('REQBODY',req.body)
   var user = await userModel.findOne({token:req.body.token})
  
-  // console.log('USER',user.criteres.budgetMax)
   var annonces = await annonceModel.find({
     ville: user.criteres.ville.trim(),
     $and: [{prix:{$gte: user.criteres.budgetMin}}, {prix:{$lte: user.criteres.budgetMax}}] 
   
   })
 
-  // console.log('xxxx', annonces)
   res.json({annonces})
 });
 
@@ -344,14 +337,11 @@ router.post('/saveToStore',async function(req,res,next){
   var user = await userModel.findOne({
     token : req.body.token
   })
-  
-  // console.log('user a envoyer',user.favoris)
-  
+    
   for(var i = 0; i <user.favoris.length; i++){
     var annoncesList = await annonceModel.find({
       _id : user.favoris
     })
-    // console.log("mes annonces sont",annoncesList)
   }
 
     res.json(annoncesList);
@@ -405,6 +395,14 @@ router.post('/addDispo', async function(req, res, next){
 //   await newRdv.save();
 
 // })
+
+
+// BACKOFFICE - RECUPERER LES UTILISATEURS
+router.get('/getUsers', async function(req, res, next){
+  let users = await userModel.find();
+  console.log('users :>> ', users);
+  res.json({users})
+})
 
 
 module.exports = router;
