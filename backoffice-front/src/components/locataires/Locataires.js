@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
 import Drawer from '../dashboard/Drawer'
-import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { Redirect } from 'react-router-dom';
 
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        height: '90vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-}));
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         height: '90vh',
+//         display: 'flex',
+//         justifyContent: 'center',
+//         alignItems: 'center'
+//     }
+// }));
 
 export default function Locataires(){
-    const classes = useStyles();
+    // const classes = useStyles();
     const [thisUser, setThisUser] = useState()
     const handleRowClick = () => {
         setThisUser('user')
@@ -51,8 +50,9 @@ export default function Locataires(){
                     ]}  
 
                     options={{
-                    search: true,
-                    pageSize: 10
+                        search: true,
+                        pageSize: 10,
+                        headerStyle: {fontWeight: 'bold'}
                     }}
 
                     style={{
@@ -66,7 +66,7 @@ export default function Locataires(){
                         emptyDataSourceMessage: 'Aucun utilisateur trouvé'
                         },
                         toolbar: {
-                            searchPlaceholder: 'Rechercher',
+                            searchPlaceholder: 'Rechercher...',
                         },
                         pagination: {
                         labelRowsSelect: 'Lignes',
