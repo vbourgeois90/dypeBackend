@@ -43,7 +43,7 @@ export default function MyDashboard(){
         var rawData = await fetch('/getUsers');
         var data = await rawData.json();
         console.log('data :>> ', data);
-  
+        
       }
       fetchData();
     }, []);
