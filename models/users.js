@@ -12,7 +12,8 @@ const documentSchema = mongoose.Schema({
 const criteresSchema = mongoose.Schema({
     budgetMin: Number,
     budgetMax: Number,
-    ville: String
+    ville: String,
+    budgetMaxDype : Number
 })
 
 const userSchema = mongoose.Schema({
