@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RDV() {
+export default function RDVCard() {
     const classes = useStyles();
     
     const listeJour=["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];

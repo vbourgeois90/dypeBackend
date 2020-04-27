@@ -9,8 +9,15 @@ import Annonces from './components/annonces/Annonces'
 import RDV from './components/rdv/RDV'
 import Stats from './components/statistiques/Statistiques'
 
+import {Provider} from 'react-redux';
+import {createStore, combineReducers}  from 'redux';
+import userList from './reducers/userList';
+const store = createStore(combineReducers({userList}));
+
+
 function App() {
   return (
+    <Provider store={store}>
     <Router>
       <Switch>
         <Route path="/" exact component={Dashboard} />
@@ -22,6 +29,7 @@ function App() {
         <Route path="/stats" component={Stats} />
       </Switch>
     </Router>
+    </Provider>
   );
 }
 

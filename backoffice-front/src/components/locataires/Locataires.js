@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import Drawer from '../dashboard/Drawer'
+// import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { Redirect } from 'react-router-dom';
 
 
 // const useStyles = makeStyles((theme) => ({
 //     root: {
-//         height: '90vh',
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center'
+
 //     }
 // }));
 
-export default function Locataires(){
+function Locataires({userList}){
     // const classes = useStyles();
     const [thisUser, setThisUser] = useState()
     const handleRowClick = () => {
@@ -47,7 +46,8 @@ export default function Locataires(){
                     { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
                     { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
                     { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    ]}  
+                    ]}
+                    // data={userList}
 
                     options={{
                         search: true,
@@ -90,3 +90,14 @@ export default function Locataires(){
         )
     }
 }
+
+function mapStateToProps(state){
+    return{
+        userList: state.userList
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(Locataires);

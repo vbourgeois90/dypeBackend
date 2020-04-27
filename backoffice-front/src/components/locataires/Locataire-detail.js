@@ -157,7 +157,7 @@ export default function LocDetail(){
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
-                                    <img className={classes.rdvPicture} src='https://media-cdn.tripadvisor.com/media/photo-s/12/b0/c1/a9/adina-apartment-hotel.jpg'/>
+                                    <img className={classes.rdvPicture} src='https://media-cdn.tripadvisor.com/media/photo-s/12/b0/c1/a9/adina-apartment-hotel.jpg' alt="apt1" />
                                 </Grid>
                             </Paper>
 
@@ -177,7 +177,7 @@ export default function LocDetail(){
                                 </Grid>
 
                                 <Grid item xs={12} sm={6}>
-                                    <img className={classes.rdvPicture} src='https://media-cdn.tripadvisor.com/media/photo-s/12/b0/c1/a9/adina-apartment-hotel.jpg'/>
+                                    <img className={classes.rdvPicture} src='https://media-cdn.tripadvisor.com/media/photo-s/12/b0/c1/a9/adina-apartment-hotel.jpg' alt="apt2"/>
                                 </Grid>
                             </Paper>
 

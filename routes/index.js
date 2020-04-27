@@ -401,7 +401,7 @@ router.post('/addDispo', async function(req, res, next){
 router.get('/getUsers', async function(req, res, next){
   let users = await userModel.find();
   console.log('users :>> ', users);
-  res.json({users})
+  res.json(users)
 })
 
 

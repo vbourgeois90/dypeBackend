@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
     documents: [documentSchema],
     favoris : Array,
     criteres: criteresSchema,
-    
+    isLoge: Boolean
 });
 
 const userModel = mongoose.model('users', userSchema);

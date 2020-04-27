@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import {Grid, Container, Paper} from '@material-ui/core'
@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Drawer from './Drawer'
 import RDV from './RDV-card';
+import Locataires from './Locataire-card'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,18 +36,6 @@ const useStyles = makeStyles((theme) => ({
 export default function MyDashboard(){
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-    // RECUPERE TOUS LES UTILISATEURS DE LA BDD
-    useEffect(() => {
-      const fetchData = async() => {
-        
-        var rawData = await fetch('/getUsers');
-        var data = await rawData.json();
-        console.log('data :>> ', data);
-        
-      }
-      fetchData();
-    }, []);
 
     return(
     <div className={classes.root}>
@@ -84,7 +73,7 @@ export default function MyDashboard(){
             {/* LOCATAIRES */}
             <Grid item xs={12} md={4}>
               <Paper className={fixedHeightPaper}>
-                {/* <Chart /> */}
+                <Locataires />
               </Paper>
             </Grid>
           </Grid>
