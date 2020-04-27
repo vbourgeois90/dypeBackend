@@ -23,8 +23,7 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
     },
     container: {
-      paddingTop: theme.spacing(4),
-      paddingBottom: theme.spacing(4),
+      padding: theme.spacing(4)
     },
     user: {
         display: 'flex',
@@ -46,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
       flexDirection: 'column',
       height: 480,
-      borderRadius: '20px'
+      borderRadius: '20px',
+    //   position: 'fixed'
     },
     info: {
         display: 'flex',
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
       height: 200,
       borderRadius: '20px',
-      overflow: 'hidden'
+      marginTop: theme.spacing(3)
     },
     rdvInfo: {
         display: 'flex',
@@ -100,31 +100,30 @@ export default function LocDetail(){
                     <Typography variant='h3' className={classes.userName}>Joël Robuchon</Typography>
                 </div>
 
-                <Grid container spacing={2} className={classes.infoContainer}>
+                <Grid container spacing={4} className={classes.infoContainer}>
                     {/* USER INFO */}
                     <Grid item xs={12} md={4}>
                         <Paper className={classes.userPaper}>
-                            <Typography variant='h6'>Informations contact:</Typography>
+                            <Typography variant='h5'>Joël Robuchon</Typography>
                             <div className={classes.info}>
                                 <AlternateEmailIcon style={{marginRight: '10px'}}/>
-                                <Typography variant='h7'>joel.bubuche@free.fr</Typography>
+                                <Typography>joel.bubuche@free.fr</Typography>
                             </div>
                             <div className={classes.info}>
                                 <PhoneIcon style={{marginRight: '10px'}}/>
-                                <Typography variant='h7'>+33661846841</Typography>
+                                <Typography>+33661846841</Typography>
                             </div>
                             <div className={classes.info}>
                                 <PinDropIcon style={{marginRight: '10px'}}/>
-                                <Typography variant='h7'>1 avenue des Rosiers, 92000 Nanterre</Typography>
+                                <Typography>1 avenue des Rosiers, 92000 Nanterre</Typography>
                             </div>
 
                             <Divider variant="middle" style={{marginTop: '40px', marginBottom: '20px'}} />
 
                             <div className={classes.info}>
                                 <DescriptionOutlinedIcon style={{marginRight: '10px', fontSize: '60px'}}/>
-                                <Link to='/locataires/dossier' style={{color: 'black'}}>Voir ses documents</Link>
+                                <Link to='/locataires/dossier' style={{color: 'black', fontSize:'16px'}}>Voir ses documents</Link>
                             </div>
-
                             
                         </Paper>
                     </Grid>
@@ -143,24 +142,45 @@ export default function LocDetail(){
                         </Grid>
                         <Grid item xs={12}>
                             <Paper className={classes.annoncePaper}>
-                                <Grid item container xs={12} sm={8} className={classes.rdvInfo}>
+                                <Grid item container xs={12} className={classes.rdvInfo}>
                                     <div style={{display: 'flex'}}>
                                         <AccessTimeIcon style={{marginRight: '10px'}}/>
                                         <div style={{display: 'flex', flexDirection: 'column'}}>
-                                            <Typography variant='h7'>Lundi 25 Mai 2020</Typography>
-                                            <Typography variant='h7'>11:00 - 11:30</Typography>
+                                            <Typography>Lundi 25 Mai 2020</Typography>
+                                            <Typography>11:00 - 11:30</Typography>
                                         </div>
                                     </div>
                                     <div className={classes.info}>
                                         <PinDropIcon style={{marginRight: '10px'}}/>
-                                        <Typography variant='h7'>12 rue de la Paix, 75001 Paris</Typography>
+                                        <Typography>12 rue de la Paix, 75001 Paris</Typography>
                                     </div>
                                 </Grid>
 
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={6}>
                                     <img className={classes.rdvPicture} src='https://media-cdn.tripadvisor.com/media/photo-s/12/b0/c1/a9/adina-apartment-hotel.jpg'/>
                                 </Grid>
                             </Paper>
+
+                            <Paper className={classes.annoncePaper}>
+                                <Grid item container xs={12} className={classes.rdvInfo}>
+                                    <div style={{display: 'flex'}}>
+                                        <AccessTimeIcon style={{marginRight: '10px'}}/>
+                                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                                            <Typography>Lundi 25 Mai 2020</Typography>
+                                            <Typography>11:00 - 11:30</Typography>
+                                        </div>
+                                    </div>
+                                    <div className={classes.info}>
+                                        <PinDropIcon style={{marginRight: '10px'}}/>
+                                        <Typography>12 rue de la Paix, 75001 Paris</Typography>
+                                    </div>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <img className={classes.rdvPicture} src='https://media-cdn.tripadvisor.com/media/photo-s/12/b0/c1/a9/adina-apartment-hotel.jpg'/>
+                                </Grid>
+                            </Paper>
+
                         </Grid>
                     </Grid>
                 </Grid>

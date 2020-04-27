@@ -2,6 +2,8 @@ import React from 'react';
 import Drawer from '../dashboard/Drawer'
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Avatar, Typography } from '@material-ui/core'
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import MaterialTable from 'material-table';
 
@@ -30,8 +32,22 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(2)
     },
     doc: {
-        marginLeft: theme.spacing(10)
+        marginLeft: theme.spacing(14),
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+        display: 'flex'
+    },
+    listActions: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+    },
+    action: {
+        display: 'flex',
+        alignItems: 'center',
+        marginRight: theme.spacing(2)
     }
+
 }));
 
 export default function LocDetail(){
@@ -56,21 +72,38 @@ export default function LocDetail(){
                         { title: 'Type de document', field: 'doc' }
                     ]}
                     data={[
-                        { doc: "Justificatif d'identité" },
-                        { doc: "Relevé de compte" },
-                        { doc: "Avis d'imposition" },
-                        { doc: "Bulletins de salaire" },
-                        { doc: "Attestation de l'employeur" },
-                        { doc: "Autre documents" }
+                        { doc: "Justificatif d'identité", listDoc: [{docName: "Justif1.jpg"}, {docName: "Justf2.jpg"}] },
+                        { doc: "Relevé de compte", listDoc: [{docName: "Justif1.jpg"}, {docName: "Justf2.jpg"}] },
+                        { doc: "Avis d'imposition", listDoc: [{docName: "Justif1.jpg"}, {docName: "Justf2.jpg"}] },
+                        { doc: "Bulletins de salaire", listDoc: [{docName: "Justif1.jpg"}, {docName: "Justf2.jpg"}] },
+                        { doc: "Attestation de l'employeur", listDoc: [{docName: "Justif1.jpg"}, {docName: "Justf2.jpg"}] },
+                        { doc: "Autre documents", listDoc: [{docName: "Justif1.jpg"}, {docName: "Justf2.jpg"}] }
                     ]}
                     detailPanel={rowData => {
                         return (
-                            <Typography variant='h7' className={classes.doc}>machin.pdf</Typography>
+                            <div className={classes.doc}>
+                                <div style={{flex: '3'}}>
+                                    <Typography variant="subtitle" style={{fontStyle: 'italic'}}>
+                                        {rowData.listDoc[0].docName}
+                                    </Typography>
+                                    
+                                </div>
+                                <div className={classes.listActions}>
+                                    <div className={classes.action}>
+                                        <VisibilityIcon />
+                                        <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>
+                                    </div>
+                                    <div className={classes.action}>
+                                        <GetAppIcon />
+                                        <Typography variant="subtitle">Télécharger</Typography>
+                                    </div>
+                                </div>                               
+                            </div>
                         )
                     }}
                     options={{
                         search: false,
-                        paging: false
+                        paging: false,
                     }}
                 />
 
