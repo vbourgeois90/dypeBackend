@@ -12,11 +12,18 @@ import { Redirect } from 'react-router-dom';
 //     }
 // }));
 
-function Locataires({userList}){
+function Locataires({userList, selectedUser}){
     // const classes = useStyles();
     const [thisUser, setThisUser] = useState()
-    const handleRowClick = () => {
-        setThisUser('user')
+
+    const formattedUserList=userList;
+    for(let i=0; i<formattedUserList.length; i++){
+        formattedUserList[i].isLoge===true ? formattedUserList[i].isLoge='logé' : formattedUserList[i].isLoge='non logé';
+    }
+
+    const handleRowClick = (userData) => {
+        setThisUser(userData);
+        selectedUser(userData);
     }
     
     if(!thisUser){
@@ -27,32 +34,22 @@ function Locataires({userList}){
 
                 <MaterialTable
                     title=""
+
                     columns={[
-                    { title: 'Nom', field: 'nom' },
-                    { title: 'Adresse e-mail', field: 'email' },
-                    { title: 'Numéro de téléphone', field: 'numTel' },
-                    { title: 'Status', field: 'status'}
+                        { title: 'Nom', field: 'nom' },
+                        { title: 'Prénom', field: 'prenom' },
+                        { title: 'Adresse e-mail', field: 'email' },
+                        { title: 'Numéro de téléphone', field: 'numeroTelephone' },
+                        { title: 'Status', field: 'isLoge'}
                     ]}
-                    data={[
-                    { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
-                    { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
-                    { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
-                    { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
-                    { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
-                    { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    { nom: 'Serge Lama', email: 'tungagnant@serge.com', numTel: '0684651684', status: 'Logé' },
-                    { nom: 'Francis Lalane', email: 'lalalasalope@jtm.com', numTel: '0684651684', status: 'En cours' },
-                    ]}
-                    // data={userList}
+
+                    data={formattedUserList}
 
                     options={{
                         search: true,
                         pageSize: 10,
-                        headerStyle: {fontWeight: 'bold'}
+                        headerStyle: {fontWeight: 'bold'},
+                        actionsColumnIndex: -1
                     }}
 
                     style={{
@@ -63,22 +60,30 @@ function Locataires({userList}){
 
                     localization={{
                         body: {
-                        emptyDataSourceMessage: 'Aucun utilisateur trouvé'
+                            emptyDataSourceMessage: 'Aucun utilisateur trouvé'
                         },
                         toolbar: {
                             searchPlaceholder: 'Rechercher...',
                         },
                         pagination: {
-                        labelRowsSelect: 'Lignes',
-                        labelDisplayedRows: ' {from}-{to} sur {count}',
-                        firstTooltip: 'Première page',
-                        previousTooltip: 'Page précédente',
-                        nextTooltip: 'Page suivante',
-                        lastTooltip: 'Dernière page'
+                            labelRowsSelect: 'Lignes',
+                            labelDisplayedRows: ' {from}-{to} sur {count}',
+                            firstTooltip: 'Première page',
+                            previousTooltip: 'Page précédente',
+                            nextTooltip: 'Page suivante',
+                            lastTooltip: 'Dernière page'
                         }
                     }}
+                    
+                    actions={[
+                        {
+                          icon: 'visibility',
+                          tooltip: 'Voir le profil',
+                          onClick: (event, rowData) => handleRowClick(rowData)
+                        }
+                    ]}
 
-                    onRowClick= {()=>handleRowClick()}
+                    // onRowClick= {()=>handleRowClick()}
                 />
 
             </div>
@@ -97,7 +102,15 @@ function mapStateToProps(state){
     }
 }
 
+function mapDispatchToProps(dispatch){
+    return{
+        selectedUser: function(user){
+            dispatch({type: 'saveUser', user})
+        }
+    }
+}
+
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Locataires);

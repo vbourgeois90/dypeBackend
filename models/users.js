@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
     token: String,
     salt: String,
     adresse: String,
-    nbTelephone: String,
+    numeroTelephone: String,
     sexe: String,
     age: Number,
     probleme: Number,

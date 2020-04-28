@@ -91,6 +91,17 @@ router.get('/RecoverAnnonce', async function(req, res, next) {
 /* ROUTES SignUp Hasni */
 
 router.post("/SingUp", async function(req, res,next){
+
+  let randomNumberA = parseInt(Math.random() * 10)
+  let randomNumberB = parseInt(Math.random() * 10)
+  let randomNumberC = parseInt(Math.random() * 10)
+  let randomNumberD = parseInt(Math.random() * 10)
+  let randomNumberE = parseInt(Math.random() * 10)
+  let randomNumberF = parseInt(Math.random() * 10)
+  let randomNumberG = parseInt(Math.random() * 10)
+  let randomNumberH = parseInt(Math.random() * 10)
+
+
   var newUser = new userModel ({
     type: 'utilisateur',
     nom: req.body.nom,
@@ -99,7 +110,9 @@ router.post("/SingUp", async function(req, res,next){
     password: SHA256(req.body.mdp + salt).toString(encBase64),
     token : uid2(15),
     salt :salt,
-    validationDossier: false
+    validationDossier: false,
+    isLoge: false,
+    numeroTelephone: `06${randomNumberA}${randomNumberB}${randomNumberC}${randomNumberD}${randomNumberE}${randomNumberF}${randomNumberG}${randomNumberH}`
   })
   await newUser.save();
   res.json({sucess:true,newUser})

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 import Drawer from '../dashboard/Drawer'
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid, Container, Paper, Avatar, Typography, Divider} from '@material-ui/core';
@@ -82,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function LocDetail(){
+function LocDetail({user}){
     const classes = useStyles();
 
     return(
@@ -96,22 +97,21 @@ export default function LocDetail(){
 
             <Container maxWidth="lg" className={classes.container}>
                 <div className={classes.user}>
-                    <Avatar className={classes.avatar}>JR</Avatar>
-                    <Typography variant='h3' className={classes.userName}>Joël Robuchon</Typography>
+                    <Avatar className={classes.avatar}>{user.prenom[0]}{user.nom[0]}</Avatar>
+                    <Typography variant='h3' className={classes.userName}>{user.prenom} {user.nom}</Typography>
                 </div>
 
                 <Grid container spacing={4} className={classes.infoContainer}>
                     {/* USER INFO */}
                     <Grid item xs={12} md={4}>
                         <Paper className={classes.userPaper}>
-                            <Typography variant='h5'>Joël Robuchon</Typography>
                             <div className={classes.info}>
                                 <AlternateEmailIcon style={{marginRight: '10px'}}/>
-                                <Typography>joel.bubuche@free.fr</Typography>
+                                <Typography>{user.email}</Typography>
                             </div>
                             <div className={classes.info}>
                                 <PhoneIcon style={{marginRight: '10px'}}/>
-                                <Typography>+33661846841</Typography>
+                                <Typography>{user.numeroTelephone}</Typography>
                             </div>
                             <div className={classes.info}>
                                 <PinDropIcon style={{marginRight: '10px'}}/>
@@ -191,3 +191,15 @@ export default function LocDetail(){
     </div>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        user: state.user
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(LocDetail)
+

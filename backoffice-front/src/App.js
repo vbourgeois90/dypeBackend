@@ -12,7 +12,8 @@ import Stats from './components/statistiques/Statistiques'
 import {Provider} from 'react-redux';
 import {createStore, combineReducers}  from 'redux';
 import userList from './reducers/userList';
-const store = createStore(combineReducers({userList}));
+import user from './reducers/selectedUser'
+const store = createStore(combineReducers({userList, user}));
 
 
 function App() {
