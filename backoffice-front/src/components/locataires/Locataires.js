@@ -1,16 +1,9 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import Drawer from '../dashboard/Drawer'
-// import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { Redirect } from 'react-router-dom';
 
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-
-//     }
-// }));
 
 function Locataires({userList, selectedUser}){
     // const classes = useStyles();

@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Drawer from '../dashboard/Drawer'
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Avatar, Typography } from '@material-ui/core'
@@ -6,7 +7,6 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import MaterialTable from 'material-table';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,8 +50,10 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function LocDetail(){
+function Dossier({user}){
     const classes = useStyles();
+
+    // const idDocs = []
 
     return(
     <div className={classes.root}>
@@ -62,8 +64,8 @@ export default function LocDetail(){
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
                 <div className={classes.user}>
-                    <Avatar>MJ</Avatar>
-                    <Typography variant='h6' className={classes.userName}>Michael Jordan</Typography>
+                    <Avatar>{user.prenom[0]}{user.nom[0]}</Avatar>
+                    <Typography variant='h6' className={classes.userName}>{user.prenom} {user.nom}</Typography>
                 </div>
 
                 <MaterialTable
@@ -113,3 +115,14 @@ export default function LocDetail(){
     </div>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        user: state.user
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(Dossier)
