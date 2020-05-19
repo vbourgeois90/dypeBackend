@@ -24,7 +24,7 @@ function LocCard({getUsers}) {
           getUsers(data)
         }
         fetchData();
-    }, []);
+    }, [getUsers]);
 
     return (
     <React.Fragment>
