@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import Drawer from '../dashboard/Drawer'
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Avatar, Typography, Modal } from '@material-ui/core'
+import { Container, Avatar, Typography } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import GetAppIcon from '@material-ui/icons/GetApp';
 
 import MaterialTable from 'material-table';
 
@@ -45,10 +44,19 @@ const useStyles = makeStyles((theme) => ({
     action: {
         display: 'flex',
         alignItems: 'center',
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(6),
+        textDecoration: 'none',
+        color: 'black'
+    },
+    modal: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     paper: {
-        position: 'absolute',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         width: 400,
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
@@ -59,15 +67,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Dossier({user}){
     const classes = useStyles();
-    const [openModal, setOpenModal] = useState(false);
-
-    const handleOpen = () => {
-        setOpenModal(true);
-    };
-    
-    const handleClose = () => {
-        setOpenModal(false);
-    };
     
     const idDocs = [];
     const justifDomDocs = [];
@@ -97,14 +96,10 @@ function Dossier({user}){
                         </Typography>
                     </div>
                     <div className={classes.listActions}>
-                        <div className={classes.action} onClick={handleOpen}>
+                        <a href={document.url} target='_blank' rel="noopener noreferrer" className={classes.action}>
                             <VisibilityIcon />
-                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>
-                        </div>
-                        <div className={classes.action}>
-                            <GetAppIcon />
-                            <Typography variant="subtitle">Télécharger</Typography>
-                        </div>
+                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>       
+                        </a>
                     </div>                               
                 </div>
     })
@@ -117,15 +112,11 @@ function Dossier({user}){
                         </Typography>
                     </div>
                     <div className={classes.listActions}>
-                        <div className={classes.action}>
+                        <a href={document.url} target='_blank' rel="noopener noreferrer" className={classes.action}>
                             <VisibilityIcon />
-                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>
-                        </div>
-                        <div className={classes.action}>
-                            <GetAppIcon />
-                            <Typography variant="subtitle">Télécharger</Typography>
-                        </div>
-                    </div>                               
+                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>       
+                        </a>
+                    </div>                              
                 </div>
     })
 
@@ -137,15 +128,11 @@ function Dossier({user}){
                         </Typography>
                     </div>
                     <div className={classes.listActions}>
-                        <div className={classes.action}>
+                        <a href={document.url} target='_blank' rel="noopener noreferrer" className={classes.action}>
                             <VisibilityIcon />
-                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>
-                        </div>
-                        <div className={classes.action}>
-                            <GetAppIcon />
-                            <Typography variant="subtitle">Télécharger</Typography>
-                        </div>
-                    </div>                               
+                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>       
+                        </a>
+                    </div>                             
                 </div>
     })
 
@@ -155,18 +142,13 @@ function Dossier({user}){
                         <Typography variant="subtitle" style={{fontStyle: 'italic'}}>
                             {document.filename}
                         </Typography>
-                        
                     </div>
                     <div className={classes.listActions}>
-                        <div className={classes.action}>
+                        <a href={document.url} target='_blank' rel="noopener noreferrer" className={classes.action}>
                             <VisibilityIcon />
-                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>
-                        </div>
-                        <div className={classes.action}>
-                            <GetAppIcon />
-                            <Typography variant="subtitle">Télécharger</Typography>
-                        </div>
-                    </div>                               
+                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>       
+                        </a>
+                    </div>                              
                 </div>
     })
 
@@ -176,30 +158,16 @@ function Dossier({user}){
                         <Typography variant="subtitle" style={{fontStyle: 'italic'}}>
                             {document.filename}
                         </Typography>
-                        
                     </div>
                     <div className={classes.listActions}>
-                        <div className={classes.action}>
+                        <a href={document.url} target='_blank' rel="noopener noreferrer" className={classes.action}>
                             <VisibilityIcon />
-                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>
-                        </div>
-                        <div className={classes.action}>
-                            <GetAppIcon />
-                            <Typography variant="subtitle">Télécharger</Typography>
-                        </div>
-                    </div>                               
+                            <Typography variant="subtitle" style={{marginLeft: '6px'}}>Voir</Typography>       
+                        </a>
+                    </div>     
                 </div>
     })
 
-    const modalBody = (
-        <div className={classes.paper}>
-          <h2 id="simple-modal-title">Text in a modal</h2>
-          <p id="simple-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          {/* <SimpleModal /> */}
-        </div>
-      );
 
     return(
     <div className={classes.root}>
@@ -244,14 +212,6 @@ function Dossier({user}){
                     }}
                 />
 
-                <Modal
-                    open={openModal}
-                    onClose={handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    {modalBody}
-                </Modal>
             </Container>
 
         </main>
